@@ -1,0 +1,18 @@
+Region, Pop.(m), Cases diarrhoea (m)
+AFR-D , 487, 620 
+AFR-E , 481, 619 
+AMR-A , 356, 24 
+AMR-B , 531, 459 
+AMR-D , 93, 93 
+EMR-B , 184, 133 
+EMR-D , 189, 153 
+EUR-A , 413, 28 
+EUR-B1,  176, 46 
+EUR-B2,  62, 41 
+EUR-D , 223, 43 
+SEAR-B,  473, 304 
+SEAR-D,  1689, 1491 
+WPR-A , 154, 17 
+WPR-B1,  1488, 1193 
+WPR-B2,  176, 117 
+WPR-B3,  9, 7 

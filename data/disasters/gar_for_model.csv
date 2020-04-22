@@ -1,0 +1,176 @@
+,country_name,Income group,EXPOSED VALUE NATIONAL million US$,EARTHQUAKE million US$,EARTHQUAKE per th,TROPICAL CYCLONES million US$,TROPICAL CYCLONES per th,TSUNAMI million US$,TSUNAMI per th,FLOODS million US$,FLOODS per th,MULTI-HAZARD million US$,MULTI-HAZARD per th,ISO,wbregion,wbregionname,wbincome,wbincomename,wblending,wbhipc
+0,Afghanistan,Low income,"60,187.90",146.81,2.44,0,0.0,,,74.52,1.24,221.33,3.68,AFG,SAS,South Asia,LIC,Low income,IDA,HIPC
+1,Albania,Upper middle income,"40,459.70",46.73,1.15,0,0.0,,,27.74,0.69,74.47,1.84,ALB,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+2,Algeria,Upper middle income,"899,206.00",991.52,1.1,0,0.0,,,161.69,0.18,"1,153.21",1.28,DZA,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+3,American Samoa,Lower middle income,"1,930.49",0.4,0.21,14.29,7.4,0.01,0.01,,,14.7,7.61,ASM,EAP,East Asia & Pacific,UMI,Upper middle income,..,
+4,Andorra,N.D,"8,381.65",0.12,0.01,0,0.0,,,,,0.12,0.01,ADO,YHI,High Income,HIX,High income: nonOECD,..,
+5,Angola,Upper middle income,"176,183.00",4.6,0.03,0,0.0,,,159.95,0.91,164.55,0.93,AGO,SSA,Sub-Saharan Africa,UMI,Upper middle income,IDA,
+6,Antigua and Barbuda,High income: nonOECD,"6,257.29",30.93,4.94,238.29,38.08,0.06,0.01,,,269.28,43.03,ATG,YHI,High Income,HIX,High income: nonOECD,IBRD,
+7,Argentina,Upper middle income,"1,380,560.00","1,103.92",0.8,0,0.0,,,648.2,0.47,"1,752.12",1.27,ARG,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+8,Armenia,Lower middle income,"22,895.20",45.24,1.98,0,0.0,,,17.68,0.77,62.92,2.75,ARM,ECA,Europe & Central Asia,LMI,Lower middle income,Blend,
+9,Aruba,High income: nonOECD,"8,909.38",16.14,1.81,39.35,4.42,,,,,55.49,6.23,ABW,YHI,High Income,HIX,High income: nonOECD,..,
+10,Australia,High income: OECD,"6,616,530.00",61.35,0.01,"1,205.46",0.18,51.13,0.01,"3,376.60",0.51,"4,694.54",0.71,AUS,YHI,High Income,HIO,High income: OECD,..,
+11,Austria,High income: OECD,"1,801,470.00",524.6,0.29,0,0.0,,,607.3,0.34,"1,131.90",0.63,AUT,YHI,High Income,HIO,High income: OECD,..,EMU
+12,Azerbaijan,Upper middle income,"192,784.00",282.02,1.46,0,0.0,,,28.59,0.15,310.61,1.61,AZE,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+13,Bahrain,High income: nonOECD,"103,503.00",25.66,0.25,0,0.0,,,,,25.66,0.25,BHR,YHI,High Income,HIX,High income: nonOECD,..,
+14,Bangladesh,Low income,"381,432.00",126.46,0.33,489.2,1.28,5.5,0.01,"2,343.16",6.14,"2,964.32",7.77,BGD,SAS,South Asia,LIC,Low income,IDA,
+15,Barbados,High income: nonOECD,"14,036.50",22.82,1.63,80.72,5.75,,,,,103.54,7.38,BRB,YHI,High Income,HIX,High income: nonOECD,..,
+16,Belarus,Upper middle income,"229,400.00",,,0,0.0,,,394.65,1.72,394.65,1.72,BLR,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+17,Belgium,High income: OECD,"1,980,550.00",190.39,0.1,0,0.0,,,100.41,0.05,290.8,0.15,BEL,YHI,High Income,HIO,High income: OECD,..,EMU
+18,Belize,Upper middle income,"5,994.43",2.95,0.49,43.51,7.26,,,36.86,6.15,83.32,13.9,BLZ,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+19,Benin,Low income,"21,971.90",0.23,0.01,0,0.0,,,23.89,1.09,24.12,1.1,BEN,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+20,Bermuda,High income: nonOECD,"10,451.90",,,61.19,5.85,0.07,0.01,,,61.26,5.86,BMU,YHI,High Income,HIX,High income: nonOECD,..,
+21,Bhutan,Lower middle income,"11,083.70",7.98,0.72,0,0.0,,,45.54,4.11,53.52,4.83,BTN,SAS,South Asia,LMI,Lower middle income,IDA,
+22,Bosnia and Herzegovina,Upper middle income,"30,656.20",14.91,0.49,0,0.0,,,46.86,1.53,61.77,2.01,BIH,ECA,Europe & Central Asia,UMI,Upper middle income,Blend,
+23,Botswana,Upper middle income,"90,628.60",31.51,0.35,0,0.0,,,51.01,0.56,82.52,0.91,BWA,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+24,Brazil,Upper middle income,"6,817,410.00",,,0,0.0,,,"3,614.74",0.53,"3,614.74",0.53,BRA,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+25,Brunei Darussalam,High income: nonOECD,"71,236.50",5.94,0.08,0,0.0,0.4,0.01,26.12,0.37,32.46,0.46,BRN,YHI,High Income,HIX,High income: nonOECD,..,
+26,Bulgaria,Upper middle income,"163,822.00",83.36,0.51,0,0.0,,,48.15,0.29,131.51,0.8,BGR,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+27,Burkina Faso,Low income,"24,689.40",,,0,0.0,,,25.04,1.01,25.04,1.01,BFA,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+28,Burundi,Low income,"3,616.17",3.87,1.07,0,0.0,,,2.8,0.77,6.67,1.84,BDI,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+29,Cambodia,Low income,"27,390.50",,,0.01,0.0,,,242.43,8.85,242.44,8.85,KHM,EAP,East Asia & Pacific,LIC,Low income,IDA,
+30,Cameroon,Lower middle income,"81,683.70",9.88,0.12,0,0.0,,,102.84,1.26,112.72,1.38,CMR,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+31,Canada,High income: OECD,"6,291,920.00",294.11,0.05,97.47,0.02,,,"2,083.02",0.33,"2,474.60",0.39,CAN,YHI,High Income,HIO,High income: OECD,..,
+32,Cayman Islands,High income: nonOECD,"8,554.03",3.26,0.38,386.51,45.18,,,,,389.77,45.57,CYM,YHI,High Income,HIX,High income: nonOECD,..,
+33,Central African Republic,Low income,"3,893.74",0.43,0.11,0,0.0,,,6.57,1.69,7,1.8,CAF,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+34,Chad,Low income,"26,745.10",,,0,0.0,,,49.83,1.86,49.83,1.86,TCD,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+35,Chile,High income: OECD,"784,154.00","2,396.64",3.06,0,0.0,11.81,0.02,347.97,0.44,"2,756.42",3.52,CHL,YHI,High Income,HIO,High income: OECD,IBRD,
+36,China,Upper middle income,"31,726,100.00","6,954.76",0.22,"6,105.05",0.19,,,"13,732.71",0.43,"26,792.52",0.84,CHN,EAP,East Asia & Pacific,UMI,Upper middle income,IBRD,
+37,Colombia,Upper middle income,"944,577.00","3,140.03",3.32,0,0.0,13.2,0.01,599.64,0.63,"3,752.87",3.97,COL,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+38,Comoros,Low income,"1,426.14",0.25,0.17,0.56,0.39,,,,,0.81,0.57,COM,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+39,Costa Rica,Upper middle income,"140,412.00",236.24,1.68,0.83,0.01,0.47,0.0,38.87,0.28,276.41,1.97,CRI,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+40,Cote d'Ivoire,Lower middle income,"45,467.60",0.33,0.01,0,0.0,,,54.93,1.21,55.26,1.22,CIV,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+41,Croatia,High income: nonOECD,"188,114.00",152.79,0.81,0,0.0,,,123.07,0.65,275.86,1.47,HRV,YHI,High Income,HIX,High income: nonOECD,IBRD,
+42,Cuba,Upper middle income,"174,919.00",3.41,0.02,321.91,1.84,,,5.51,0.03,330.83,1.89,CUB,LAC,Latin America & Caribbean,UMI,Upper middle income,..,
+43,Cyprus,High income: nonOECD,"71,610.50",28.55,0.4,0,0.0,0.55,0.01,0.01,0.0,29.11,0.41,CYP,YHI,High Income,HIX,High income: nonOECD,..,EMU
+44,Czech Republic,High income: OECD,"1,007,260.00",149.9,0.15,0,0.0,,,334.81,0.33,484.71,0.48,CZE,YHI,High Income,HIO,High income: OECD,..,
+45,Denmark,High income: OECD,"1,346,390.00",,,0,0.0,,,19.64,0.01,19.64,0.01,DNK,YHI,High Income,HIO,High income: OECD,..,
+46,Djibouti,Lower middle income,"4,744.66",2.95,0.62,0,0.0,,,0.22,0.05,3.17,0.67,DJI,MNA,Middle East & North Africa,LMI,Lower middle income,IDA,
+47,Dominica,Upper middle income,"2,027.94",13.06,6.44,55.46,27.35,,,,,68.52,33.79,DMA,LAC,Latin America & Caribbean,UMI,Upper middle income,Blend,
+48,Dominican Republic,Upper middle income,"202,173.00",363.87,1.8,549.35,2.72,,,87.07,0.43,"1,000.29",4.95,DOM,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+49,Ecuador,Upper middle income,"282,705.00","1,248.86",4.42,0,0.0,2.24,0.01,189.62,0.67,"1,440.72",5.1,ECU,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+50,El Salvador,Lower middle income,"71,580.50",250.38,3.5,0,0.0,,,10.7,0.15,261.08,3.65,SLV,LAC,Latin America & Caribbean,LMI,Lower middle income,IBRD,
+51,Equatorial Guinea,High income: nonOECD,"20,061.40",2.53,0.13,0,0.0,,,31.74,1.58,34.27,1.71,GNQ,YHI,High Income,HIX,High income: nonOECD,IBRD,
+52,Eritrea,Low income,"9,081.79",0.71,0.08,0,0.0,,,7.21,0.79,7.92,0.87,ERI,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+53,Estonia,High income: OECD,"79,617.30",1.09,0.01,0,0.0,,,52.81,0.66,53.9,0.68,EST,YHI,High Income,HIO,High income: OECD,..,EMU
+54,Ethiopia,Low income,"65,598.90",2.94,0.04,0,0.0,,,83.72,1.28,86.66,1.32,ETH,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+55,Faeroe Islands,High income: nonOECD,"9,272.37",,,1.13,0.12,,,,,1.13,0.12,FRO,YHI,High Income,HIX,High income: nonOECD,..,
+56,Fiji,Upper middle income,"11,571.00",1.52,0.13,130.27,11.26,,,,,131.79,11.39,FJI,EAP,East Asia & Pacific,UMI,Upper middle income,IBRD,
+57,Finland,High income: OECD,"965,383.00",,,0,0.0,,,,,0,0.0,FIN,YHI,High Income,HIO,High income: OECD,..,EMU
+58,France,High income: OECD,"10,329,400.00",501.01,0.05,0,0.0,,,"2,813.36",0.27,"3,314.37",0.32,FRA,YHI,High Income,HIO,High income: OECD,..,EMU
+59,French Polynesia,High income: nonOECD,"22,002.00",,,104.08,4.73,,,,,104.08,4.73,PYF,YHI,High Income,HIX,High income: nonOECD,..,
+60,Gabon,Upper middle income,"120,252.00",2.9,0.02,0,0.0,,,296.97,2.47,299.87,2.49,GAB,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+61,Georgia,Lower middle income,"53,823.50",167.01,3.1,0,0.0,,,40.32,0.75,207.33,3.85,GEO,ECA,Europe & Central Asia,LMI,Lower middle income,Blend,
+62,Germany,High income: OECD,"15,114,900.00","2,350.12",0.16,0,0.0,,,"2,105.63",0.14,"4,455.75",0.29,DEU,YHI,High Income,HIO,High income: OECD,..,EMU
+63,Ghana,Lower middle income,"74,174.00",,,0,0.0,,,66.26,0.89,66.26,0.89,GHA,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+64,Greece,High income: OECD,"1,181,280.00","5,109.11",4.33,0,0.0,,,42.38,0.04,"5,151.49",4.36,GRC,YHI,High Income,HIO,High income: OECD,..,EMU
+65,Grenada,Upper middle income,"4,536.19",8.6,1.9,21.07,4.64,,,,,29.67,6.54,GRD,LAC,Latin America & Caribbean,UMI,Upper middle income,Blend,
+66,Guatemala,Lower middle income,"172,912.00",701.65,4.06,0,0.0,,,57.41,0.33,759.06,4.39,GTM,LAC,Latin America & Caribbean,LMI,Lower middle income,IBRD,
+67,Guinea,Low income,"13,665.90",0.45,0.03,0,0.0,,,24.41,1.79,24.86,1.82,GIN,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+68,Guinea-Bissau,Low income,"2,029.35",0.06,0.03,0,0.0,,,1.01,0.5,1.07,0.53,GNB,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+69,Guyana,Lower middle income,"8,076.05",0.06,0.01,0,0.0,,,33.75,4.18,33.81,4.19,GUY,LAC,Latin America & Caribbean,LMI,Lower middle income,IDA,HIPC
+70,Haiti,Low income,"28,268.60",119.53,4.23,51.16,1.81,,,27.94,0.99,198.63,7.03,HTI,LAC,Latin America & Caribbean,LIC,Low income,IDA,HIPC
+71,Honduras,Lower middle income,"77,974.80",675.94,8.67,24.34,0.31,,,104.84,1.34,805.12,10.33,HND,LAC,Latin America & Caribbean,LMI,Lower middle income,IDA,HIPC
+72,Hungary,Upper middle income,"562,480.00",123.2,0.22,0,0.0,,,"1,403.06",2.49,"1,526.26",2.71,HUN,ECA,Europe & Central Asia,UMI,Upper middle income,..,
+73,Iceland,High income: OECD,"57,291.70",31.5,0.55,0,0.0,,,,,31.5,0.55,ISL,YHI,High Income,HIO,High income: OECD,..,
+74,India,Lower middle income,"5,769,370.00",446.55,0.08,"1,887.36",0.33,,,"6,230.81",1.08,"8,564.72",1.48,IND,SAS,South Asia,LMI,Lower middle income,Blend,
+75,Indonesia,Lower middle income,"2,827,830.00","1,116.01",0.39,37.86,0.01,48.15,0.02,"2,086.88",0.74,"3,288.90",1.16,IDN,EAP,East Asia & Pacific,LMI,Lower middle income,IBRD,
+76,Iraq,Upper middle income,"132,500.00",159.43,1.2,0,0.0,,,285.01,2.15,444.44,3.35,IRQ,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+77,Ireland,High income: OECD,"778,822.00",12.72,0.02,0,0.0,,,169.73,0.22,182.45,0.23,IRL,YHI,High Income,HIO,High income: OECD,..,EMU
+78,Israel,High income: OECD,"853,829.00",381.32,0.45,0,0.0,,,3.12,0.0,384.44,0.45,ISR,YHI,High Income,HIO,High income: OECD,..,
+79,Italy,High income: OECD,"8,604,330.00","9,772.86",1.14,0,0.0,,,527.67,0.06,"10,300.53",1.2,ITA,YHI,High Income,HIO,High income: OECD,..,EMU
+80,Jamaica,Upper middle income,"70,711.40",48.75,0.69,402.91,5.7,,,9.78,0.14,461.44,6.53,JAM,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+81,Japan,High income: OECD,"39,255,200.00","31,857.11",0.81,"22,345.62",0.57,"2,997.17",0.08,"2,436.62",0.06,"59,636.52",1.52,JPN,YHI,High Income,HIO,High income: OECD,..,
+82,Jordan,Upper middle income,"121,481.00",46.25,0.38,0,0.0,,,0.89,0.01,47.14,0.39,JOR,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+83,Kazakhstan,Upper middle income,"734,310.00",387.3,0.53,0,0.0,,,363.16,0.49,750.46,1.02,KAZ,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+84,Kenya,Low income,"98,382.70",12.57,0.13,0,0.0,,,107.67,1.09,120.24,1.22,KEN,SSA,Sub-Saharan Africa,LIC,Low income,IDA,
+85,Kiribati,Lower middle income,595.12,,,0,0.0,0.01,0.02,,,0.01,0.02,KIR,EAP,East Asia & Pacific,LMI,Lower middle income,IDA,
+86,Kuwait,High income: nonOECD,"469,418.00",201.43,0.43,0,0.0,,,0.74,0.0,202.17,0.43,KWT,YHI,High Income,HIX,High income: nonOECD,..,
+87,Latvia,High income: nonOECD,"95,608.80",,,0,0.0,,,154.49,1.62,154.49,1.62,LVA,YHI,High Income,HIX,High income: nonOECD,..,
+88,Lebanon,Upper middle income,"207,724.00",119.65,0.58,0,0.0,2.73,0.01,3.24,0.02,125.62,0.6,LBN,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+89,Lesotho,Lower middle income,"17,938.00",15.77,0.88,0,0.0,,,19.83,1.11,35.6,1.98,LSO,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,
+90,Liberia,Low income,"1,911.24",0.11,0.05,0,0.0,,,2.73,1.43,2.84,1.49,LBR,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+91,Libya,Upper middle income,"73,757.40",11.49,0.16,0,0.0,0.31,0.0,3.03,0.04,14.83,0.2,LBY,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+92,Liechtenstein,High income: nonOECD,"18,837.10",9.8,0.52,0,0.0,,,,,9.8,0.52,LIE,YHI,High Income,HIX,High income: nonOECD,..,
+93,Lithuania,High income: nonOECD,"135,614.00",,,0,0.0,,,125.39,0.92,125.39,0.92,LTU,YHI,High Income,HIX,High income: nonOECD,..,
+94,Luxembourg,High income: OECD,"201,131.00",13.27,0.07,0,0.0,,,6.73,0.03,20,0.1,LUX,YHI,High Income,HIO,High income: OECD,..,EMU
+95,Madagascar,Low income,"23,496.40",0.58,0.02,206.26,8.78,,,57.42,2.44,264.26,11.25,MDG,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+96,Malawi,Low income,"18,357.00",8.2,0.45,0,0.0,,,46.05,2.51,54.25,2.96,MWI,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+97,Malaysia,Upper middle income,"1,170,980.00",10.49,0.01,0,0.0,,,"1,145.54",0.98,"1,156.03",0.99,MYS,EAP,East Asia & Pacific,UMI,Upper middle income,IBRD,
+98,Maldives,Upper middle income,"7,443.12",,,0,0.0,0.05,0.01,,,0.05,0.01,MDV,SAS,South Asia,UMI,Upper middle income,IDA,
+99,Mali,Low income,"27,719.20",,,0,0.0,,,56,2.02,56,2.02,MLI,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+100,Malta,High income: nonOECD,"36,990.20",13.32,0.36,0,0.0,,,,,13.32,0.36,MLT,YHI,High Income,HIX,High income: nonOECD,..,EMU
+101,Marshall Islands,Upper middle income,766.31,,,0.25,0.33,0,0.01,,,0.25,0.33,MHL,EAP,East Asia & Pacific,UMI,Upper middle income,IDA,
+102,Mauritania,Lower middle income,"11,985.50",0.22,0.02,0,0.0,,,17.39,1.45,17.61,1.47,MRT,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+103,Mauritius,Upper middle income,"44,217.90",,,93.52,2.11,,,,,93.52,2.11,MUS,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+104,Mexico,Upper middle income,"4,513,850.00","1,354.65",0.3,716.07,0.16,,,566.49,0.13,"2,637.21",0.58,MEX,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+105,Monaco,High income: nonOECD,"20,716.40",11.7,0.56,0,0.0,,,,,11.7,0.56,MCO,YHI,High Income,HIX,High income: nonOECD,..,
+106,Mongolia,Lower middle income,"36,587.60",3.83,0.1,0,0.0,,,31.04,0.85,34.87,0.95,MNG,EAP,East Asia & Pacific,LMI,Lower middle income,Blend,
+107,Montenegro,Upper middle income,"8,892.93",5.1,0.57,0,0.0,,,2.76,0.31,7.86,0.88,MNE,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+108,Morocco,Lower middle income,"374,846.00",157.28,0.42,0,0.0,,,176.51,0.47,333.79,0.89,MAR,MNA,Middle East & North Africa,LMI,Lower middle income,IBRD,
+109,Mozambique,Low income,"36,409.40",7.91,0.22,45.08,1.24,,,50.56,1.39,103.55,2.84,MOZ,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+110,Myanmar,Low income,"195,390.00",35.57,0.18,82.37,0.42,3.27,0.02,"1,909.01",9.77,"2,030.22",10.39,MMR,EAP,East Asia & Pacific,LIC,Low income,IDA,
+111,Namibia,Upper middle income,"42,062.70",3.39,0.08,0,0.0,,,87.3,2.08,90.69,2.16,NAM,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+112,Nepal,Low income,"53,996.60",29.5,0.55,0,0.0,,,132.07,2.45,161.57,2.99,NPL,SAS,South Asia,LIC,Low income,IDA,
+113,Netherlands,High income: OECD,"3,410,960.00",237.82,0.07,0,0.0,,,691.54,0.2,929.36,0.27,NLD,YHI,High Income,HIO,High income: OECD,..,EMU
+114,New Caledonia,High income: nonOECD,"17,113.30",2.38,0.14,480.16,28.06,0.37,0.02,,,482.91,28.22,NCL,YHI,High Income,HIX,High income: nonOECD,..,
+115,New Zealand,High income: OECD,"679,705.00",22.81,0.03,324.47,0.48,21.89,0.03,376.49,0.55,745.66,1.1,NZL,YHI,High Income,HIO,High income: OECD,..,
+116,Nicaragua,Lower middle income,"35,973.80",72.5,2.02,3.85,0.11,,,33.28,0.93,109.63,3.05,NIC,LAC,Latin America & Caribbean,LMI,Lower middle income,IDA,HIPC
+117,Niger,Low income,"12,723.50",,,0,0.0,,,21.43,1.68,21.43,1.68,NER,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+118,Nigeria,Lower middle income,"592,030.00",20.64,0.03,0,0.0,,,693.24,1.17,713.88,1.21,NGA,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,
+119,Norway,High income: OECD,"1,933,680.00",10.36,0.01,0,0.0,,,,,10.36,0.01,NOR,YHI,High Income,HIO,High income: OECD,..,
+120,Oman,High income: nonOECD,"202,534.00",43.37,0.21,24.89,0.12,,,14.5,0.07,82.76,0.41,OMN,YHI,High Income,HIX,High income: nonOECD,..,
+121,Pakistan,Lower middle income,"502,344.00",272.05,0.54,25.6,0.05,,,955.59,1.9,"1,253.24",2.49,PAK,SAS,South Asia,LMI,Lower middle income,Blend,
+122,Palau,Upper middle income,780.07,0.13,0.16,12.81,16.42,0.06,0.08,,,13,16.67,PLW,EAP,East Asia & Pacific,UMI,Upper middle income,IBRD,
+123,Panama,Upper middle income,"124,687.00",135.35,1.09,0,0.0,0.74,0.01,21.85,0.18,157.94,1.27,PAN,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+124,Papua New Guinea,Lower middle income,"47,017.90",73.59,1.57,1.43,0.03,0.59,0.01,86.39,1.84,162,3.45,PNG,EAP,East Asia & Pacific,LMI,Lower middle income,Blend,
+125,Paraguay,Lower middle income,"92,568.60",,,0,0.0,,,79.06,0.85,79.06,0.85,PRY,LAC,Latin America & Caribbean,LMI,Lower middle income,IBRD,
+126,Peru,Upper middle income,"692,345.00","3,669.56",5.3,0,0.0,6.92,0.01,301.27,0.44,"3,977.75",5.75,PER,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+127,Philippines,Lower middle income,"566,949.00",703.46,1.24,"6,613.13",11.66,30.63,0.05,506.7,0.89,"7,853.92",13.85,PHL,EAP,East Asia & Pacific,LMI,Lower middle income,IBRD,
+128,Poland,High income: OECD,"1,614,720.00",188.81,0.12,0,0.0,,,502.02,0.31,690.83,0.43,POL,YHI,High Income,HIO,High income: OECD,IBRD,
+129,Portugal,High income: OECD,"1,054,340.00",7.35,0.01,0,0.0,,,104.04,0.1,111.39,0.11,PRT,YHI,High Income,HIO,High income: OECD,..,EMU
+130,Puerto Rico,High income: nonOECD,"259,030.00",354.23,1.37,"4,355.08",16.81,3.67,0.01,7.98,0.03,"4,720.96",18.23,PRI,YHI,High Income,HIX,High income: nonOECD,..,
+131,Qatar,High income: nonOECD,"624,818.00",152.9,0.24,0,0.0,,,0.07,0.0,152.97,0.24,QAT,YHI,High Income,HIX,High income: nonOECD,..,
+132,Romania,Upper middle income,"555,697.00",255.64,0.46,0,0.0,,,448.66,0.81,704.3,1.27,ROU,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+133,Russian Federation,High income: nonOECD,"6,325,790.00",296.92,0.05,0,0.0,,,"4,144.32",0.66,"4,441.24",0.7,RUS,YHI,High Income,HIX,High income: nonOECD,IBRD,
+134,Rwanda,Low income,"13,197.40",12.68,0.96,0,0.0,,,22.48,1.7,35.16,2.66,RWA,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+135,San Marino,High income: nonOECD,"4,049.35",5.92,1.46,0,0.0,,,,,5.92,1.46,SMR,YHI,High Income,HIX,High income: nonOECD,..,
+136,Sao Tome and Principe,Lower middle income,"2,122.70",0.06,0.03,0,0.0,,,,,0.06,0.03,STP,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+137,Saudi Arabia,High income: nonOECD,"2,141,420.00",162.74,0.08,0,0.0,,,74.74,0.03,237.48,0.11,SAU,YHI,High Income,HIX,High income: nonOECD,..,
+138,Senegal,Lower middle income,"35,335.20",0.79,0.02,0,0.0,,,14.09,0.4,14.88,0.42,SEN,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+139,Serbia,Upper middle income,"57,317.20",33.37,0.58,0,0.0,,,156.18,2.72,189.55,3.31,SRB,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+140,Seychelles,Upper middle income,"6,234.98",,,0,0.0,,,,,0,0.0,SYC,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+141,Sierra Leone,Low income,"3,031.82",0.1,0.03,0,0.0,,,7.72,2.55,7.82,2.58,SLE,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+142,Singapore,High income: nonOECD,"1,126,580.00",,,0,0.0,,,,,0,0.0,SGP,YHI,High Income,HIX,High income: nonOECD,..,
+143,Slovenia,High income: OECD,"139,900.00",159.19,1.14,0,0.0,,,29.61,0.21,188.8,1.35,SVN,YHI,High Income,HIO,High income: OECD,..,EMU
+144,Solomon Islands,Lower middle income,"3,693.47",3.61,0.98,39.66,10.74,0.13,0.03,,,43.4,11.75,SLB,EAP,East Asia & Pacific,LMI,Lower middle income,IDA,
+145,Somalia,Low income,"6,408.32",0.16,0.03,0,0.0,,,18.88,2.95,19.04,2.97,SOM,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+146,South Africa,Upper middle income,"1,282,850.00",601.24,0.47,0,0.0,,,762.14,0.59,"1,363.38",1.06,ZAF,SSA,Sub-Saharan Africa,UMI,Upper middle income,IBRD,
+147,South Sudan,Lower middle income,"19,958.30",3.9,0.2,0,0.0,,,30.01,1.5,33.91,1.7,SSD,SSA,Sub-Saharan Africa,LIC,Low income,IDA,
+148,Spain,High income: OECD,"6,233,960.00",72.48,0.01,0,0.0,,,745.83,0.12,818.31,0.13,ESP,YHI,High Income,HIO,High income: OECD,..,EMU
+149,Sri Lanka,Lower middle income,"208,274.00",,,20.27,0.1,1.75,0.01,128.05,0.61,150.07,0.72,LKA,SAS,South Asia,LMI,Lower middle income,Blend,
+150,Sudan,Lower middle income,"70,368.80",1.89,0.03,0,0.0,,,120.4,1.71,122.29,1.74,SDN,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+151,Suriname,Upper middle income,"9,620.16",,,0,0.0,,,52.8,5.49,52.8,5.49,SUR,LAC,Latin America & Caribbean,UMI,Upper middle income,IBRD,
+152,Swaziland,Lower middle income,"13,701.20",6.99,0.51,0,0.0,,,8.41,0.61,15.4,1.12,SWZ,SSA,Sub-Saharan Africa,LMI,Lower middle income,IBRD,
+153,Sweden,High income: OECD,"1,747,500.00",,,0,0.0,,,69.39,0.04,69.39,0.04,SWE,YHI,High Income,HIO,High income: OECD,..,
+154,Switzerland,High income: OECD,"3,421,610.00",786.78,0.23,0,0.0,,,780.08,0.23,"1,566.86",0.46,CHE,YHI,High Income,HIO,High income: OECD,..,
+155,Syrian Arab Republic,Lower middle income,"204,643.00",149.11,0.73,0,0.0,,,89.16,0.44,238.27,1.16,SYR,MNA,Middle East & North Africa,LMI,Lower middle income,IBRD,
+156,Tajikistan,Low income,"20,536.90",64.44,3.14,0,0.0,,,42.34,2.06,106.78,5.2,TJK,ECA,Europe & Central Asia,LIC,Low income,IDA,
+157,Thailand,Upper middle income,"1,379,000.00",32.56,0.02,0.02,0.0,,,"2,289.82",1.66,"2,322.40",1.68,THA,EAP,East Asia & Pacific,UMI,Upper middle income,IBRD,
+158,Timor-Leste,N.D,"12,524.20",14.59,1.16,0,0.0,0.25,0.02,0.69,0.06,15.53,1.24,TLS,EAP,East Asia & Pacific,LMI,Lower middle income,Blend,
+159,Togo,Low income,"12,513.70",,,0,0.0,,,15.84,1.27,15.84,1.27,TGO,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+160,Tonga,Upper middle income,"1,303.32",3.35,2.57,29.14,22.36,0.18,0.14,,,32.67,25.07,TON,EAP,East Asia & Pacific,UMI,Upper middle income,IDA,
+161,Trinidad and Tobago,High income: nonOECD,"68,647.90",596.11,8.68,23.98,0.35,,,0.39,0.01,620.48,9.04,TTO,YHI,High Income,HIX,High income: nonOECD,IBRD,
+162,Tunisia,Upper middle income,"178,846.00",97.19,0.54,0,0.0,,,22.45,0.13,119.64,0.67,TUN,MNA,Middle East & North Africa,UMI,Upper middle income,IBRD,
+163,Turkey,Upper middle income,"1,947,250.00","2,200.39",1.13,0,0.0,,,230.37,0.12,"2,430.76",1.25,TUR,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+164,Turkmenistan,Upper middle income,"36,127.00",19.25,0.53,0,0.0,,,71.71,1.98,90.96,2.52,TKM,ECA,Europe & Central Asia,UMI,Upper middle income,IBRD,
+165,Turks and Caicos Islands,High income: nonOECD,"1,049.28",0.1,0.09,20.61,19.64,0.01,0.01,,,20.72,19.75,TCA,YHI,High Income,HIX,High income: nonOECD,..,
+166,Tuvalu,Upper middle income,123.27,,,0,0.0,0,0.01,,,0,0.0,TUV,EAP,East Asia & Pacific,UMI,Upper middle income,IDA,
+167,Uganda,Low income,"43,697.10",22.14,0.51,0,0.0,,,28.4,0.65,50.54,1.16,UGA,SSA,Sub-Saharan Africa,LIC,Low income,IDA,HIPC
+168,Ukraine,Lower middle income,"676,834.00",8.67,0.01,0,0.0,,,"1,018.35",1.5,"1,027.02",1.52,UKR,ECA,Europe & Central Asia,LMI,Lower middle income,IBRD,
+169,United Arab Emirates,High income: nonOECD,"1,282,120.00",753.1,0.59,0,0.0,,,669.09,0.52,"1,422.19",1.11,ARE,YHI,High Income,HIX,High income: nonOECD,..,
+170,Uruguay,High income: nonOECD,"116,460.00",,,0,0.0,,,23.6,0.2,23.6,0.2,URY,YHI,High Income,HIX,High income: nonOECD,IBRD,
+171,Uzbekistan,Lower middle income,"151,891.00",225.05,1.48,0,0.0,,,64.15,0.42,289.2,1.9,UZB,ECA,Europe & Central Asia,LMI,Lower middle income,Blend,
+172,Vanuatu,Lower middle income,"2,809.61",7.65,2.72,58.87,20.95,0.06,0.02,,,66.58,23.7,VUT,EAP,East Asia & Pacific,LMI,Lower middle income,IDA,
+173,Zambia,Lower middle income,"48,954.50",17.41,0.36,0,0.0,,,34.28,0.7,51.69,1.06,ZMB,SSA,Sub-Saharan Africa,LMI,Lower middle income,IDA,HIPC
+174,Zimbabwe,Low income,"22,038.10",4.18,0.19,0,0.0,,,8,0.36,12.18,0.55,ZWE,SSA,Sub-Saharan Africa,LIC,Low income,Blend,

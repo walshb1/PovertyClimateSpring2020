@@ -1,0 +1,8 @@
+Households in developing countries were categorized in four consumption segments for the Global Consumption Database: lowest, low, middle, and higher.
+Four levels of consumption are used to segment the market in each country: lowest, low, middle, and higher. They are based on global income distribution data, which rank the global population by income per capita. The lowest consumption segment corresponds to the bottom half of the global distribution, or the 50th percentile and below; the low consumption segment to the 51th–75th percentiles; the middle consumption segment to the 76th–90th percentiles; and the higher consumption segment to the 91st percentile and above.
+ 
+These thresholds were used to establish the four consumption segments:
+Lowest—below $2.97 per capita a day
+Low—between $2.97 and $8.44 per capita a day
+Middle—between $8.44 and $23.03 per capita a day
+Higher—above $23.03 per capita a day
