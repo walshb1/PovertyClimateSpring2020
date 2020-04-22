@@ -72,10 +72,10 @@ def scenar_ranges(ssp,ranges,finalhhframe,countrycode,ssp_gdp,codes_tables,ssp_p
 	ranges.ix['shareemp',['min','max']]   = find_range_struct(shareemp_ini,'emp')
 	ranges.ix['shareurban',['min','max']] = load_ssp_urbanization_data(countrycode,shareurban_ini,ini_year,year,ssp=2)
 	
-    # The code below is unnecessary and needs to be updated
-	#select_gr=['grag','grmanu','grserv']
-	#ranges.ix[select_gr,['min','max']]=[ssp_growth-pop_growth-0.05,ssp_growth-pop_growth+0.01]
-	
+	select_gr=['grag','grmanu','grserv']
+	ranges.ix[select_gr,['min','max']]=[ssp_growth-pop_growth-0.05,ssp_growth-pop_growth+0.01]
+    
+	# The code below is unnecessary and needs to be updated
 	#if countrycode in ['BTN']:
 		#ranges.ix[select_gr,['min','max']]=[ssp_growth-pop_growth-0.08,ssp_growth-pop_growth-0.01]
 	#if countrycode in ['AFG','ALB','BIH','CHN','DOM','ECU','EGY','FSM','GEO','GIN','JAM','KGZ','MAR','MDA','MKD','MNG','MOZ','NPL','PHL']:
