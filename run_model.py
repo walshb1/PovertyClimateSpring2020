@@ -42,10 +42,10 @@ iiasa_data        = model+'/iiasa_data/'
 present    = "{}/{}_present/".format(model,nameofthisround)
 baselines  = "{}/{}_baselines/".format(model,nameofthisround)
 with_cc    = "{}/{}_with_cc/".format(model,nameofthisround)
-baselines_2050  = "{}/{}_baselines_2050/".format(model,nameofthisround)
-with_cc_2050    = "{}/{}_with_cc_2050/".format(model,nameofthisround)
+baselines_2030  = "{}/{}_baselines_2030/".format(model,nameofthisround)
+with_cc_2030    = "{}/{}_with_cc_2030/".format(model,nameofthisround)
 
-for _ in [present,baselines,with_cc,baselines_2050,with_cc_2050]:
+for _ in [present,baselines,with_cc,baselines_2030,with_cc_2030]:
 	if nameofthisround == 'test': os.rmdir(_)
 	if not os.path.exists(_): os.makedirs(_)
 	
@@ -166,14 +166,14 @@ for countrycode in list(all_surveys.keys()):
 	        #except: print('Did not run ',countrycode)
 
 
-		if run_2050:  
-			paramvar_2050=(2050,ini_year,data2day,ssp_to_test,povline)
-			forprim_now, forprim_bau,forprim_cc = country_run(countrycode,scenar,datalist,paramvar_2050,all_surveys,switches)
+		if run_2030:  
+			paramvar_2030=(2030,ini_year,data2day,ssp_to_test,povline)
+			forprim_now, forprim_bau,forprim_cc = country_run(countrycode,scenar,datalist,paramvar_2030,all_surveys,switches)
 
 			if forprim_bau.shape[0]!=0 and forprim_cc.shape[0]!=0:
 				#forprim_now.T.to_csv("{}forprim_now_{}.csv".format(present,countrycode))
-				forprim_bau.T.to_csv("{}forprim_bau_{}.csv".format(baselines_2050,countrycode))
-				forprim_cc.T.to_csv("{}forprim_cc_{}.csv".format(with_cc_2050,countrycode))
+				forprim_bau.T.to_csv("{}forprim_bau_{}.csv".format(baselines_2030,countrycode))
+				forprim_cc.T.to_csv("{}forprim_cc_{}.csv".format(with_cc_2030,countrycode))
 
 
 	_record_keeping.sort_index().to_csv('results_summary/GMD_to_finalhhframe_status.csv')
