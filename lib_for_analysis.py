@@ -2,7 +2,7 @@ from pandas import read_excel,concat,Series,DataFrame,read_csv,isnull,notnull,HD
 import numpy as np
 import matplotlib.pyplot as plt
 from perc import wp
-from lib_for_growth_model import get_gdp_growth
+#from lib_for_growth_model import get_gdp_growth
 from sklearn import tree
 from statsmodels.stats.anova import anova_lm
 from statsmodels.formula.api import ols
@@ -379,12 +379,15 @@ def leg_from_strings(threevaroutopt,threesignoutopt,threevaluesoutopt,i):
 	leg=firstpart+secondpart+thirdpart
 	return leg
 	
-def drivers_from_anova(varin,data,experiments_cols):
+def drivers_from_anova(varin,data,experiments_cols, return_table=False):
 	formula = varin+" ~ " + "+".join(experiments_cols)
 	olsmodel=ols(formula,data=data).fit()
 	table=anova_lm(olsmodel)
 	table['sum_sq_pc']=table['sum_sq']/table['sum_sq'].sum()
-	table=table.sort(['sum_sq'],ascending=False)
+	try:
+		table=table.sort(['sum_sq'],ascending=False)
+	except:
+		table=table.sort_values(by=['sum_sq'],ascending=False)
 	sumvar=0
 	drivers=list()
 	for var in table.index:
@@ -393,7 +396,9 @@ def drivers_from_anova(varin,data,experiments_cols):
 			sumvar+=table.loc[var,'sum_sq_pc']
 		if len(drivers)==3:
 			break
-	return drivers,sumvar
+	if return_table:
+		return drivers,sumvar, table
+	else:
+		return drivers,sumvar
 	
 		
-	
