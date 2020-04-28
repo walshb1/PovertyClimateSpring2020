@@ -30,8 +30,6 @@ industry_list = read_csv(scenar_folder+"list_industries.csv")
 dataset = 'GMD'#I2D2'#'GIDD'#'
 
 
-
-
 #if dataset == 'GIDD':
 	#data_gidd_csv     = model+'/data_gidd_csv_v4/'
 	#list_csv=os.listdir(data_gidd_csv)
