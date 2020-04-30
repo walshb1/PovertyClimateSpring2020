@@ -110,13 +110,23 @@ if dataset == 'GMD':
     # Look at the files
     if True:
         data_gmd_dta = model+'/GMD/GMD/'
-        list_countries = [_ for _ in os.listdir(data_gmd_dta) if 'DS_Store' not in _]
-        for _country in list_countries:
-            if not os.path.isfile("GMD_skims/"+_country+".csv"):
-                read_stata(data_gmd_dta+_country).to_csv(model+'/GMD_skims/'+_country+'.csv')
-                print('\n',_country)
+        list_dta = []
+        list_dta=os.listdir(data_gmd_dta)
+        #list_countries = [_ for _ in os.listdir(data_gmd_dta) if 'DS_Store' not in _]
+        for dta in range(len(list_dta)):
+            dta_code = list_dta[dta][0]+list_dta[dta][1]+list_dta[dta][2]
+            if not os.path.isfile("GMD_skims/"+dta_code+".csv"):
+                read_stata(data_gmd_dta+list_dta[dta]).to_csv(model+'/GMD_skims/'+dta_code+'.csv')
+                print('\n',dta_code)
             else:
-                print(_country,'skim exists')
+                print(dta_code,'skim exists')
+                
+        #for _country in list_countries:
+            #if not os.path.isfile("GMD_skims/"+_country+".csv"):
+                #read_stata(data_gmd_dta+_country).to_csv(model+'/GMD_skims/'+_country+'.csv')
+                #print('\n',_country)
+            #else:
+                #print(_country,'skim exists')
                 
 			#for _dir in [_ for _ in os.listdir(data_gmd_dta+'/'+_country) if 'DS_Store' not in _]:
 				#for _subdir in  [_ for _ in os.listdir(data_gmd_dta+'/'+_country+'/'+_dir) if 'DS_Store' not in _]:
@@ -131,8 +141,14 @@ if dataset == 'GMD':
         countries_to_skip = []#['IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
         
         data_gmd_skims = model+'/GMD_skims/'
-        list_csv=os.listdir(data_gmd_skims)
-        list_countries  = [s.replace('.csv','') for s in list_csv if 'DS_Store' not in s]
+        list_csv = []
+        list_csv = os.listdir(data_gmd_skims)
+        #list_countries  = [s.replace('.csv','') for s in list_csv if 'DS_Store' not in s]
+        
+        list_countries = []
+        for skimname in range(len(list_csv)):
+            skimcode = list_csv[skimname][0]+list_csv[skimname][1]+list_csv[skimname][2]
+            list_countries.append(skimcode)
         
         #_record_bad = read_csv('results_summary/GMD_to_finalhhframe_status.csv').set_index('country')
         
@@ -142,60 +158,57 @@ if dataset == 'GMD':
             try:
                 wbreg = codes.loc[codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values
             except:
-                print('cant find wbreg for ',countrycode)    
+                print('cant find wbreg for ',countrycode)
+                
+        for countrycode in list_countries:
+            
+            if countrycode in countries_to_skip: continue # hard-coded above
+            #if countrycode in _record_bad.index and _record_bad.loc[countrycode,'skim_is_final']: continue
+    		#if countrycode in _record_bad.index and _record_bad.loc[countrycode,'BAU_complete']: continue
+    		#if countrycode in _record_bad.index and not _record_bad.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
+    		#if countrycode in _record_bad.index and not _record_bad.loc[countrycode,'GMD_has_skill_level']: continue
+            else:
+                print('\n--> running',countrycode)
+                #_record_bad.loc[countrycode,['is_high_income',
+                #'GMD_has_sectoral_employment_data',
+                #'GMD_has_skill_level',
+                #'skim_is_final']] = [False,False,None,None]
+                
+            if not os.path.isfile("finalhhdataframes/"+countrycode+"_finalhhframe.csv"):
+                try: wbreg = codes.loc[codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values[0]
+                except:
+                    print('cant find wbreg for ',countrycode)
+                    #_record_bad.loc[countrycode,'skim_is_final'] = False
+                    #_record_bad.sort_index().to_csv('results_summary/GMD_to_finalhhframe_status.csv')
+                    continue
 
+        	#if wbreg == 'YHI': _record_bad.loc[countrycode,'is_high_income'] = True
+            #else: _record_bad.loc[countrycode,'is_high_income'] = False
 
-
-		if countrycode in countries_to_skip: continue # hard-coded above
-		#if countrycode in _record_bad.index and _record_bad.loc[countrycode,'skim_is_final']: continue
-		#if countrycode in _record_bad.index and _record_bad.loc[countrycode,'BAU_complete']: continue
-		#if countrycode in _record_bad.index and not _record_bad.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
-		#if countrycode in _record_bad.index and not _record_bad.loc[countrycode,'GMD_has_skill_level']: continue
-		else: 
-			print('\n--> running',countrycode)
-			_record_bad.loc[countrycode,['is_high_income',
-						     'GMD_has_sectoral_employment_data',
-						     'GMD_has_skill_level',
-						     'skim_is_final']] = [False,False,None,None]
-
-		# if not os.path.isfile("finalhhdataframes/"+countrycode+"_finalhhframe.csv"):
-		try: wbreg = codes.loc[codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values[0]
-		except: 
-			print('cant find wbreg for ',countrycode)
-			_record_bad.loc[countrycode,'skim_is_final'] = False
-			_record_bad.sort_index().to_csv('results_summary/GMD_to_finalhhframe_status.csv')
-			continue
-
-		if wbreg == 'YHI': _record_bad.loc[countrycode,'is_high_income'] = True
-		else: _record_bad.loc[countrycode,'is_high_income'] = False
-
-
-		#try: 
-		if True:
-			finalhhframe, failure_types = create_correct_data(countrycode,data_gmd_skims,hhcat,industry_list,dataset='GMD')
-		
-			has_sectoral_employment_data,has_skill_level = failure_types
-			_record_bad.loc[countrycode,'GMD_has_sectoral_employment_data'] = has_sectoral_employment_data
-			_record_bad.loc[countrycode,'GMD_has_skill_level'] = has_skill_level
-			#
-			if not has_sectoral_employment_data or not has_skill_level: 
-				print('did not save out final df for '+countrycode)
-				_record_bad.loc[countrycode,'skim_is_final'] = False
-			#
-			else:
-				if finalhhframe["idh"].dtype=='O':
-					try: 
-						finalhhframe["idh"]=[re.sub('[^0-9a]+', '3', x) for x in finalhhframe["idh"]]
-						finalhhframe["idh"]=finalhhframe["idh"].astype(float)
-					except: pass
-		
-				finalhhframe = finalhhframe.dropna(how='all',axis=1)
-				finalhhframe.to_csv("finalhhdataframes_GMD/"+countrycode+"_finalhhframe.csv",encoding='utf-8',index=False)
-				print('got final df for '+countrycode)
-				_record_bad.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [True,False,False]
-				
-                #except: 
-		#	print('...multiple failures')
-		#	_record_bad.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [False,False,False]
-
-		_record_bad.sort_index().to_csv('results_summary/GMD_to_finalhhframe_status.csv')
+            #try: 
+            if True:
+                finalhhframe, failure_types = create_correct_data(countrycode,data_gmd_skims,hhcat,industry_list,dataset='GMD')
+                has_sectoral_employment_data,has_skill_level = failure_types
+                #_record_bad.loc[countrycode,'GMD_has_sectoral_employment_data'] = has_sectoral_employment_data
+                #_record_bad.loc[countrycode,'GMD_has_skill_level'] = has_skill_level
+                
+                if not has_sectoral_employment_data or not has_skill_level:
+                    print('did not save out final df for '+countrycode)
+                    #_record_bad.loc[countrycode,'skim_is_final'] = False
+                    
+                else:
+                    if finalhhframe["idh"].dtype=='O':
+                        try:
+                            finalhhframe["idh"]=[re.sub('[^0-9a]+', '3', x) for x in finalhhframe["idh"]]
+                            finalhhframe["idh"]=finalhhframe["idh"].astype(float)
+                        except: pass
+                    
+                    finalhhframe = finalhhframe.dropna(how='all',axis=1)
+                    finalhhframe.to_csv("finalhhdataframes_GMD/"+countrycode+"_finalhhframe.csv",encoding='utf-8',index=False)
+                    print('got final df for '+countrycode)
+                    #_record_bad.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [True,False,False]
+                    
+			#except:
+                #print('...multiple failures')
+                #_record_bad.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [False,False,False]
+                #_record_bad.sort_index().to_csv('results_summary/GMD_to_finalhhframe_status.csv')

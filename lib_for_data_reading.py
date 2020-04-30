@@ -413,18 +413,19 @@ def create_correct_data(countrycode,data_in_csv,hhcat,industry_list,dataset='GID
                           ['skilled','educy',-1],
                           ['idh','hhid',-1]]:
         
-        if essential_col[0] == 'Y':
-            conv_df = read_stata('finalhhdataframes_GMD/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
-            conv_df = conv_df.loc[(conv_df.code==countrycode)&(conv_df.year==rawdataframe.year.mean())]
-            ppp = rawdataframe.apply(lambda x:get_ppp_factors(countrycode,x,conv_df),axis=1)
-            rawdataframe['Y'] = ppp*rawdataframe['welfare']
+        #if essential_col[0] == 'Y':
+            #conv_df = read_stata('finalhhdataframes_GMD/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
+            #conv_df = conv_df.loc[(conv_df.code==countrycode)&(conv_df.year==rawdataframe.year.mean())]
+            #ppp = rawdataframe.apply(lambda x:get_ppp_factors(countrycode,x,conv_df),axis=1)
+            #rawdataframe['Y'] = ppp*rawdataframe['welfare']
 
             #ppp_df.to_csv('~/Desktop/tmp/ppp.csv')
             #ppp_df = ppp_df.loc[(ppp_df.code==countrycode)&(ppp_df.datalevel==df_datalevel)&(ppp_df.year==rawdataframe.year.mean())]
             #
             #rawdataframe['Y'] = rawdataframe['welfare']/ppp_df[['cpi2011','icp2011']].prod(axis=1).squeeze()
 
-        elif essential_col[0] == 'skilled': 
+        #elif essential_col[0] == 'skilled':
+        if essential_col[0] == 'skilled': 
             if rawdataframe['educy'].isnull().all() and rawdataframe['educat4'].isnull().all(): has_skill = False
             else:
                 rawdataframe[essential_col[0]] = rawdataframe['educat4']>=3
