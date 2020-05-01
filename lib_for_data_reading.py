@@ -12,7 +12,7 @@ def get_ini_year(_country):
     return(iy)
 
 def some(rawdataframe, n):
-    return rawdataframe.ix[np.random.choice(rawdataframe.index, n)]
+    return rawdataframe.loc[np.random.choice(rawdataframe.index, n)]
 	
 def split_big_dframe(finalhhframe,hhcat):
     a=finalhhframe[['weight','reg02']].groupby('reg02').apply(lambda x:x['weight'].count())
@@ -20,8 +20,8 @@ def split_big_dframe(finalhhframe,hhcat):
     c=b.sort(columns=['count'],ascending=False)
     bool1 = c.cumsum()<c.cumsum()['count'].iloc[-1]/2
     list_reg = list(c[bool1].dropna().index)
-    finalhhframe1=finalhhframe.ix[finalhhframe['reg02'].isin(list_reg),:]
-    finalhhframe2=finalhhframe.ix[~finalhhframe['reg02'].isin(list_reg),:]
+    finalhhframe1=finalhhframe.loc[finalhhframe['reg02'].isin(list_reg),:]
+    finalhhframe2=finalhhframe.loc[~finalhhframe['reg02'].isin(list_reg),:]
     int_columns=['children','old','decile']+['cat{}workers'.format(thecat) for thecat in hhcat['hhcat'].unique()]
     finalhhframe1=merges_rows_bis(int_columns,finalhhframe1)
     finalhhframe2=merges_rows_bis(int_columns,finalhhframe2)
@@ -36,11 +36,11 @@ def convert_int_to_float(rawdataframe):
 	
 def del_missing_Y(rawdataframe):
     "delete rows with missing income and distribute weights"
-    rawdataframe=rawdataframe.drop(rawdataframe.ix[isnull(rawdataframe["wgthh2007"]),:].index)
+    rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index)
     missing=isnull(rawdataframe["Y"])
-    add2wgt=rawdataframe.ix[missing,'wgthh2007'].sum()
+    add2wgt=rawdataframe.loc[missing,'wgthh2007'].sum()
     scal=rawdataframe['wgthh2007'].sum()/(rawdataframe['wgthh2007'].sum()-add2wgt)
-    rawdataframe=rawdataframe.drop(rawdataframe.ix[missing,:].index)
+    rawdataframe=rawdataframe.drop(rawdataframe.loc[missing,:].index)
     rawdataframe['wgthh2007']=rawdataframe['wgthh2007']*scal
     rawdataframe['skilled'].fillna(0, inplace=True)
     rawdataframe['skilled']=rawdataframe['skilled'].astype(bool)
@@ -57,7 +57,7 @@ def find_indus(rawdataframe,industry_list):
     industry_dict = industry_list.set_index('indata').to_dict()['industrycode']
     expanded_industry_dict = {float('nan'):None,np.nan:None}
 
-    industry_list.to_csv('~/Desktop/tmp/inslist.csv')
+    industry_list.to_csv('inslist.csv')
 
     for _i in industry_dict:
         expanded_industry_dict[_i] = industry_dict[_i]
@@ -110,16 +110,16 @@ def associate_indus_to_head(rawdataframe,hhcat):
     #sort by head to be able to have the spouse first when the head does not have an industry
     rawdataframe=rawdataframe.sort(columns=['idh','head'],ascending=False)
     #solve pbs with duplicate head of household or missing head
-    checkheads=rawdataframe.ix[:,['idh','ishead']].groupby('idh',sort=False).apply(lambda x:x['ishead'].sum())
+    checkheads=rawdataframe.loc[:,['idh','ishead']].groupby('idh',sort=False).apply(lambda x:x['ishead'].sum())
     #if no head, replaced by spouse first and then adult
-    subset=rawdataframe.ix[(rawdataframe['idh'].isin(checkheads.ix[checkheads==0].index))&(1-rawdataframe['isachild']),['head','idh','ishead']]
+    subset=rawdataframe.loc[(rawdataframe['idh'].isin(checkheads.loc[checkheads==0].index))&(1-rawdataframe['isachild']),['head','idh','ishead']]
     hop=subset.groupby('idh')
     rawdataframe.loc[rawdataframe['idh'].isin(hop['idh'].head(1).values),'ishead']=1
     #if more than one head, drop duplicates in the hh dataframe later.
     #associate a category to each person based on hhcat
     for group in rawdataframe.groupby(list(categories.values)):
         therow=(hhcat[list(categories.values)].values==np.array(group[0])).all(1)
-        cat=hhcat.ix[therow,'hhcat'].values
+        cat=hhcat.loc[therow,'hhcat'].values
         rawdataframe.loc[group[1].index,'headcat']=cat
     return rawdataframe
 	
@@ -134,7 +134,7 @@ def associate_cat2people(rawdataframe,hhcat):
     categories=hhcat.columns[1::]
     for group in rawdataframe.groupby(list(categories.values)):
         therow=(hhcat[list(categories.values)].values==np.array(group[0])).all(1)
-        cat=hhcat.ix[therow,'hhcat'].values
+        cat=hhcat.loc[therow,'hhcat'].values
         rawdataframe.loc[group[1].index,'cat']=int(cat)
 
     rawdataframe['cat']=rawdataframe['cat'].astype('int64')
@@ -146,7 +146,7 @@ def associate_cat2people(rawdataframe,hhcat):
 def deal_with_head_issues(hhdataframe):
 	#look for households where someone else than the head has an industry (but not the head)
 	otherworkers=(hhdataframe['noindustry']==1)&((hhdataframe['agworkers']>0)|(hhdataframe['manuworkers']>0)|(hhdataframe['servworkers']>0))
-	sub=rawdataframe.ix[(rawdataframe['idh'].isin(hhdataframe.ix[otherworkers,:].index))&(rawdataframe['isanadult'])&(rawdataframe['headcat']<7),['head','idh','headcat']].copy()
+	sub=rawdataframe.loc[(rawdataframe['idh'].isin(hhdataframe.loc[otherworkers,:].index))&(rawdataframe['isanadult'])&(rawdataframe['headcat']<7),['head','idh','headcat']].copy()
 	#takes the category of the spouse or if not, the first member of the hh with an industry
 	hop=sub.groupby('idh')
 	newcats=hop['headcat'].head(1)
@@ -155,12 +155,12 @@ def deal_with_head_issues(hhdataframe):
 	return hhdataframe
 
 def correct_zeroY(rawdataframe):
-	min_Y=rawdataframe.ix[rawdataframe['Y']>0,'Y'].min()
-	rawdataframe.ix[rawdataframe['Y']==0,'Y']=min_Y
+	min_Y=rawdataframe.loc[rawdataframe['Y']>0,'Y'].min()
+	rawdataframe.loc[rawdataframe['Y']==0,'Y']=min_Y
 	return rawdataframe
 	
 def sumoverhh(hhdataframe,rawdataframe,hhcolstring,rawstring):
-	hhdataframe.loc[hhdataframe.index,hhcolstring]=rawdataframe.ix[:,['idh',rawstring]].groupby('idh',sort=False).apply(lambda x:x[rawstring].sum())
+	hhdataframe.loc[hhdataframe.index,hhcolstring]=rawdataframe.loc[:,['idh',rawstring]].groupby('idh',sort=False).apply(lambda x:x[rawstring].sum())
 	return hhdataframe
 	
 def intensify_cat_columns(hhdataframe,rawdataframe,hhcat):
@@ -183,8 +183,8 @@ def reshape_data(income):
 def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=False):
 
     "Extracts the three main components of our pb from the country dataframe: characteristics is a matrix that has all important household characteristics in columns and hh heads in lines. weights is the weight of each hh head and pop_description is a summary of total population: number of children, skilled people etc"
-    try: rawdataframe=rawdataframe.drop(rawdataframe.ix[isnull(rawdataframe["wgthh2007"]),:].index)
-    except: rawdataframe=rawdataframe.drop(rawdataframe.ix[isnull(rawdataframe['wgt']),:].index)
+    try: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index)
+    except: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe['wgt']),:].index)
 
     rawdataframe=convert_int_to_float(rawdataframe)
     rawdataframe=del_missing_Y(rawdataframe)
@@ -282,11 +282,11 @@ def get_pop_data_from_UN(UNpop,countrycode,theyear):
     "get the description of the country's population in the projected year from UN/WB data"
     year='YR'+str(theyear)
     select=(UNpop['Country_Code']==countrycode)&((UNpop['Time_ValueCode']==year))
-    country_pop=UNpop.ix[select,:].pivot(index='Time_ValueCode',columns='Indicator_Code',values='Value')
-    pop_tot=country_pop.ix[year,'SP.POP.TOTL']
-    pop_0014=country_pop.ix[year,'SP.POP.0014.TO']
-    pop_1564=country_pop.ix[year,'SP.POP.1564.TO']
-    pop_65up=country_pop.ix[year,'SP.POP.65UP.TO']
+    country_pop=UNpop.loc[select,:].pivot(index='Time_ValueCode',columns='Indicator_Code',values='Value')
+    pop_tot=country_pop.loc[year,'SP.POP.TOTL']
+    pop_0014=country_pop.loc[year,'SP.POP.0014.TO']
+    pop_1564=country_pop.loc[year,'SP.POP.1564.TO']
+    pop_65up=country_pop.loc[year,'SP.POP.65UP.TO']
     return pop_tot,pop_0014,pop_1564,pop_65up
 
 def get_pop_data_from_ssp_by_region(ssp,year):
@@ -300,7 +300,7 @@ def get_pop_data_from_ssp_by_region(ssp,year):
     scenario="SSP{}_v9_130115".format(ssp)
     #
     selection=(ssp_data['MODEL']==model)&(ssp_data['SCENARIO']==scenario)
-    pop_tot=ssp_data.ix[selection&(ssp_data['VARIABLE']=="Population"),['REGION',str(year)]].rename(columns={'REGION':'country'})
+    pop_tot=ssp_data.loc[selection&(ssp_data['VARIABLE']=="Population"),['REGION',str(year)]].rename(columns={'REGION':'country'})
     pop_tot = merge(pop_tot.reset_index(),income_classification.reset_index(),on='country').set_index('wbregionname')[str(year)]
     #
     reg_tot = pop_tot.sum(level='wbregionname')*1E6
@@ -314,11 +314,11 @@ def get_pop_data_from_ssp(ssp_data,ssp,year,countrycode,_global=False):
     scenario="SSP{}_v9_130115".format(ssp)
     if not _global: 
         selection=(ssp_data['MODEL']==model)&(ssp_data['SCENARIO']==scenario)&(ssp_data['REGION']==countrycode)
-        pop_tot=ssp_data.ix[selection&(ssp_data['VARIABLE']=="Population"),str(year)].squeeze()
+        pop_tot=ssp_data.loc[selection&(ssp_data['VARIABLE']=="Population"),str(year)].squeeze()
 
     else:
         selection=(ssp_data['MODEL']==model)&(ssp_data['SCENARIO']==scenario)
-        pop_tot=ssp_data.ix[selection&(ssp_data['VARIABLE']=="Population"),str(year)].sum().squeeze()        
+        pop_tot=ssp_data.loc[selection&(ssp_data['VARIABLE']=="Population"),str(year)].sum().squeeze()        
 
     pop_0014=0
     pop_1564=0
@@ -326,20 +326,20 @@ def get_pop_data_from_ssp(ssp_data,ssp,year,countrycode,_global=False):
     for gender in ['Male','Female']:
         for age in ['0-4','5-9','10-14']:
             var="Population|{}|Aged{}".format(gender,age)
-            pop_0014+=ssp_data.ix[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
+            pop_0014+=ssp_data.loc[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
         for age in ['15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64']:
             var="Population|{}|Aged{}".format(gender,age)
-            pop_1564+=ssp_data.ix[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
+            pop_1564+=ssp_data.loc[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
         for age in ['65-69','70-74','75-79','80-84','85-89','90-94','95-99','100+']:
             var="Population|{}|Aged{}".format(gender,age)
-            pop_65up+=ssp_data.ix[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
+            pop_65up+=ssp_data.loc[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
 
     skilled_adults=0
     for gender in ['Male','Female']:
         for age in ['15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64']:
             for edu in ['Secondary Education','Tertiary Education']:
                 var="Population|{}|Aged{}|{}".format(gender,age,edu)
-                skilled_adults+=ssp_data.ix[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
+                skilled_adults+=ssp_data.loc[selection&(ssp_data['VARIABLE']==var),str(year)].values.sum()
     pop_tot=pop_tot*10**6
     pop_0014=pop_0014*10**6
     pop_1564=pop_1564*10**6
@@ -377,22 +377,22 @@ def get_gdp_growth(ssp_data,year,ssp,r32,ini_year):
     selection=(ssp_data['MODEL']==model)&(ssp_data['SCENARIO']==scenario)&(ssp_data['REGION']==r32)&(ssp_data['VARIABLE']=='GDP|PPP')
 
     if ini_year<2010:
-        y1=ssp_data.ix[selection,'2005'].values[0]
-        y2=ssp_data.ix[selection,'2010'].values[0]
+        y1=ssp_data.loc[selection,'2005'].values[0]
+        y2=ssp_data.loc[selection,'2010'].values[0]
         f=interpolate.interp1d([2005,2010], [y1,y2],kind='slinear')
         gdp_ini=f(ini_year)
     else:
-        y1=ssp_data.ix[selection,'2010'].values[0]
+        y1=ssp_data.loc[selection,'2010'].values[0]
         try: 
-            y2=ssp_data.ix[selection,'2015'].values[0]
+            y2=ssp_data.loc[selection,'2015'].values[0]
             f=interpolate.interp1d([2010,2015], [y1,y2],kind='slinear')
             gdp_ini=f(ini_year)   
         except:
-            y2=ssp_data.ix[selection,'2020'].values[0]
+            y2=ssp_data.loc[selection,'2020'].values[0]
             f=interpolate.interp1d([2010,2020], [y1,y2],kind='slinear')
             gdp_ini=f(ini_year)   
          
-    gdp_growth=ssp_data.ix[selection,str(year)].values[0]/gdp_ini
+    gdp_growth=ssp_data.loc[selection,str(year)].values[0]/gdp_ini
     return gdp_growth
 
 
@@ -428,9 +428,9 @@ def create_correct_data(countrycode,data_in_csv,hhcat,industry_list,dataset='GID
         if essential_col[0] == 'skilled': 
             if rawdataframe['educy'].isnull().all() and rawdataframe['educat4'].isnull().all(): has_skill = False
             else:
-                rawdataframe[essential_col[0]] = rawdataframe['educat4']>=3
+                rawdataframe[essential_col[0]] = rawdataframe['educat4']#>=3
                 if rawdataframe[essential_col[0]].isnull().all():
-                    rawdataframe[essential_col[0]] = rawdataframe['educy']>9
+                    rawdataframe[essential_col[0]] = rawdataframe['educy']#>9
                 if rawdataframe[essential_col[0]].isnull().all(): assert(False)
 
         elif essential_col[0] not in rawdataframe.columns:
