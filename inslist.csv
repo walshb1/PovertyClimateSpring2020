@@ -1,0 +1,45 @@
+,indata,industrycode
+0,Commerce,serv
+1,Transports and comnunications,serv
+2,Others,serv
+3,Community and family oriented services,serv
+4,Agriculture,ag
+5,Construction,manu
+6,Manufacturing,manu
+7,Mining,manu
+8,Financial and business-oriented services,serv
+9,Public utilities,serv
+10,Transport and telecomnunications,serv
+11,Others not well specified,serv
+12,Communal serv.,serv
+13,"Agriculture, Hunting, etc.",ag
+14,Public services,serv
+15,"Retail, Hotels",serv
+16,Finance and business serv.,serv
+17,Financial and business-serv,serv
+18,Public administration,serv
+19,Other services,serv
+20,Unspecified,serv
+21,Communal services,serv
+22,Agriculture and fishing,ag
+23,"Transportation, storage and communication",serv
+24,Manufacture,manu
+25,Financial insurance and real estate,serv
+26,Electricity and utilities,serv
+27,Communal Services,serv
+28,servicios comunales,serv
+29,Finance and insurance serv.,serv
+30,11,serv
+31,1,ag
+32,3,manu
+33,10,serv
+34,9,serv
+35,6,serv
+36,7,serv
+37,5,manu
+38,4,serv
+39,8,serv
+40,2,manu
+41,"Reatil, Hotels",serv
+42,Transports and communications,serv
+43,Service,serv
