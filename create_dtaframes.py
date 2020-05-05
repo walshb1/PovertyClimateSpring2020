@@ -46,9 +46,11 @@ class mainframe():
 
         # country classifications, options
         self.list_countries = []
+        self.country_file_dict = {}
         for skimname in range(len(self.list_raw)):
-            skimcode = self.list_raw[skimname][0]+self.list_raw[skimname][1]+self.list_raw[skimname][2]
-            self.list_countries.append(skimcode)
+            cname = self.list_raw[skimname][:3]
+            self.list_countries.append(cname)
+            self.country_file_dict[cname] = self.list_raw[skimname]
 
         self.rich_countries = []#'AUT','BEL']
         self.countries_to_skip = []#['IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
@@ -65,7 +67,12 @@ class mainframe():
 
     def load_gmd_record(self):
         try: record = read_csv(self.data_gmd+'/GMD_to_finalhhframe_status.csv').set_index('country')
-        except: record = pd.DataFrame(index=self.list_countries)
+        except: record = pd.DataFrame({'is_high_income':None,
+                                       'GMD_has_sectoral_employment_data':None,
+                                       'GMD_has_skill_level':None,
+                                       'skim_is_final':None,
+                                       'BAU_complete':None,
+                                       'CC_complete':None},index=self.list_countries)
         return record        
 
 
@@ -77,11 +84,8 @@ class mainframe():
 
             if countrycode in self.countries_to_skip: continue # hard-coded above
 
-            # wbreg = self.codes.loc[self.codes['country']==countrycode,'wbregion'].values
-            try: wbreg = self.codes.loc[codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values
+            try: wbreg = self.codes.loc[self.codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values
             except: print('cant find wbreg for ',countrycode)
-                
-            assert(False)
 
             # Check if this is necessary
             #if countrycode in record.index and record.loc[countrycode,'skim_is_final']: continue
@@ -92,9 +96,9 @@ class mainframe():
             print('\n--> running',countrycode)
             record.loc[countrycode,['is_high_income','GMD_has_sectoral_employment_data','GMD_has_skill_level','skim_is_final']] = [False,False,None,None]
                 
-
-            try:
-                finalhhframe, failure_types = create_correct_data(countrycode,data_gmd_skims,hhcat,industry_list,dataset='GMD')
+            if True:
+            # try:
+                finalhhframe, failure_types = create_correct_data(self,countrycode)
                 has_sectoral_employment_data,has_skill_level = failure_types
                 record.loc[countrycode,'GMD_has_sectoral_employment_data'] = has_sectoral_employment_data
                 record.loc[countrycode,'GMD_has_skill_level'] = has_skill_level
@@ -114,8 +118,9 @@ class mainframe():
                     finalhhframe.to_csv(self.finalhhdataframes+countrycode+'_finalhhframe.csv',encoding='utf-8',index=False)
                     print('got final df for '+countrycode)
                     record.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [True,False,False]
-                    
-            except:
+                
+            else:    
+            # except:
                 print('...multiple failures')
                 record.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [False,False,False]
             

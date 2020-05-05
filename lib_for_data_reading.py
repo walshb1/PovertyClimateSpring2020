@@ -42,7 +42,12 @@ def del_missing_Y(rawdataframe):
     scal=rawdataframe['wgthh2007'].sum()/(rawdataframe['wgthh2007'].sum()-add2wgt)
     rawdataframe=rawdataframe.drop(rawdataframe.loc[missing,:].index)
     rawdataframe['wgthh2007']=rawdataframe['wgthh2007']*scal
-    rawdataframe['skilled'].fillna(0, inplace=True)
+
+    try: rawdataframe['skilled'].fillna(0, inplace=True)
+    except: 
+        rawdataframe['skilled'] = rawdataframe['skilled'].cat.add_categories(0)
+        rawdataframe['skilled'].fillna(0, inplace=True)
+
     rawdataframe['skilled']=rawdataframe['skilled'].astype(bool)
     return rawdataframe
 	
@@ -50,14 +55,12 @@ def convert_to_str_if_poss(x):
     try: return str(int(float(x)))
     except: return x
 
-def find_indus(rawdataframe,industry_list):
-    has_sectoral_employment_data = True
+def get_industry_dict(industry_list):
 
     industry_list['indata'] = industry_list['indata'].apply(lambda x:convert_to_str_if_poss(x))
     industry_dict = industry_list.set_index('indata').to_dict()['industrycode']
     expanded_industry_dict = {float('nan'):None,np.nan:None}
-
-    industry_list.to_csv('inslist.csv')
+    #industry_list.to_csv('inslist.csv')
 
     for _i in industry_dict:
         expanded_industry_dict[_i] = industry_dict[_i]
@@ -65,16 +68,31 @@ def find_indus(rawdataframe,industry_list):
         except: pass
         try: expanded_industry_dict[float(_i)] = industry_dict[_i]
         except: pass
-    industry_dict = expanded_industry_dict
 
+    return expanded_industry_dict
+
+
+def find_indus(rawdataframe,industry_list):
+
+    # initiaize
+    has_sectoral_employment_data = True
     rawdataframe["newindus"]=np.nan
 
-    if 'industry' not in rawdataframe.columns and 'industrycat10' in rawdataframe.columns:
-        rawdataframe = rawdataframe.rename(columns={'industrycat10':'industry'})
-    elif 'industry' not in rawdataframe.columns and 'industrycat4' in rawdataframe.columns:
-        rawdataframe = rawdataframe.rename(columns={'industrycat4':'industry'})
+    # get dictionary for translation to major sectors
+    industry_dict = get_industry_dict(industry_list)
+
+    # look for input data
+    if 'industrycat10' in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'industrycat10':'industry'})
+    elif 'industrycat4' in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'industrycat4':'industry'})
         
+    # set lstatus flag
     has_lstatus = 'lstatus' in rawdataframe.columns
+
+    rawdataframe.loc[rawdataframe['lstatus']==1,'newindus'] = rawdataframe.loc[rawdataframe['lstatus']==1,'industry'].replace(industry_dict,inplace=False)
+    rawdataframe.head(10).to_csv('~/Desktop/tmp/ind_labor.csv')
+
+    assert(False)
+
     for ii in rawdataframe.index:
         _row = rawdataframe.loc[ii].copy()
         if not has_lstatus or has_lstatus and _row['lstatus'] == 1:
@@ -182,18 +200,28 @@ def reshape_data(income):
 	
 def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=False):
 
-    "Extracts the three main components of our pb from the country dataframe: characteristics is a matrix that has all important household characteristics in columns and hh heads in lines. weights is the weight of each hh head and pop_description is a summary of total population: number of children, skilled people etc"
+    # Extracts the three main components of our pb from the country dataframe: 
+    # - 1) characteristics is a matrix that has all important household characteristics in columns and hh heads in lines. 
+    # - 2) weights is the weight of each hh head 
+    # - 3) pop_description is a summary of total population: number of children, skilled people etc"
+
     try: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index)
     except: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe['wgt']),:].index)
 
     rawdataframe=convert_int_to_float(rawdataframe)
     rawdataframe=del_missing_Y(rawdataframe)
     rawdataframe=correct_zeroY(rawdataframe)
+
+    # head of household info
     try: rawdataframe['ishead']=rawdataframe['head']=="Head of household"
     except: rawdataframe['ishead']=rawdataframe['relationharm']==1
 
+    # get industry info
     rawdataframe,has_sectoral_employment_data=find_indus(rawdataframe,industry_list)
-    if not has_sectoral_employment_data: return None, has_sectoral_employment_data
+    #if not has_sectoral_employment_data: return None, has_sectoral_employment_data
+
+    print(has_sectoral_employment_data)
+    assert(False)
 
     rawdataframe=create_age_col(rawdataframe)
     rawdataframe=create_urban_col(rawdataframe)
@@ -400,18 +428,33 @@ def get_ppp_factors(countrycode,x,ppp_df):
     result = float(ppp_df.loc[ppp_df.datalevel==x.datalevel,['cpi2011','icp2011']].prod(axis=1))**(-1)
     return result
 
-def create_correct_data(countrycode,data_in_csv,hhcat,industry_list,dataset='GIDD',issplit=False):
-    rawdataframe=read_csv(data_in_csv+countrycode+('_GIDD' if dataset=='GIDD' else '')+'.csv')
+def create_correct_data(mf,countrycode,issplit=False):
 
+    print(mf.country_file_dict[countrycode])
+    try: rawdataframe=read_csv(mf.data_gmd_raw+mf.country_file_dict[countrycode])
+    except: rawdataframe=read_stata(mf.data_gmd_raw+mf.country_file_dict[countrycode])
+    rawdataframe.head(10).to_csv('~/Desktop/tmp/{}.csv'.format(countrycode))
+
+    # datalevel is used for PPP weighting
     if (countrycode != 'IND' and countrycode != 'IDN' and countrycode != 'CHN'): rawdataframe['datalevel'] = 2
 
     has_skill = True
-
+    
+    # get weight
     if 'weight' not in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'weight_h':'weight'})
+
+    # get education level
+    try: rawdataframe['skilled'] = rawdataframe['educy'].copy()
+    except:
+        try: rawdataframe['skilled'] = rawdataframe['educat4'].copy()
+        except: has_skill = False
+
     for essential_col in [['Y','welfare',0],
                           ['wgthh2007','weight',0],
-                          ['skilled','educy',-1],
                           ['idh','hhid',-1]]:
+
+        if essential_col[0] not in rawdataframe.columns:
+            rawdataframe[essential_col[0]] = rawdataframe[essential_col[1]].copy().fillna(essential_col[2])
         
         #if essential_col[0] == 'Y':
             #conv_df = read_stata('finalhhdataframes_GMD/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
@@ -423,25 +466,13 @@ def create_correct_data(countrycode,data_in_csv,hhcat,industry_list,dataset='GID
             #ppp_df = ppp_df.loc[(ppp_df.code==countrycode)&(ppp_df.datalevel==df_datalevel)&(ppp_df.year==rawdataframe.year.mean())]
             #
             #rawdataframe['Y'] = rawdataframe['welfare']/ppp_df[['cpi2011','icp2011']].prod(axis=1).squeeze()
-
-        #elif essential_col[0] == 'skilled':
-        if essential_col[0] == 'skilled': 
-            if rawdataframe['educy'].isnull().all() and rawdataframe['educat4'].isnull().all(): has_skill = False
-            else:
-                rawdataframe[essential_col[0]] = rawdataframe['educat4']#>=3
-                if rawdataframe[essential_col[0]].isnull().all():
-                    rawdataframe[essential_col[0]] = rawdataframe['educy']#>9
-                if rawdataframe[essential_col[0]].isnull().all(): assert(False)
-
-        elif essential_col[0] not in rawdataframe.columns:
-            rawdataframe[essential_col[0]] = rawdataframe[essential_col[1]].copy().fillna(essential_col[2])
             
 
     listofdeciles=np.sort(np.append(np.arange(0.1, 1.1, 0.1),[0.99]))
     if issplit:
-        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=True)
+        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,mf.hhcat,mf.industry_list,listofdeciles,issplit=True)
     else:
-        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles)
+        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,mf.hhcat,mf.industry_list,listofdeciles)
     
     if finalhhframe is not None:
         if finalhhframe["idh"].dtype=='O':
