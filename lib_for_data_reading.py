@@ -55,51 +55,44 @@ def convert_to_str_if_poss(x):
     try: return str(int(float(x)))
     except: return x
 
-def get_industry_dict(industry_list):
+def get_industry_dict(industry_list,gmd_ind_dtype):
 
-    industry_list['indata'] = industry_list['indata'].apply(lambda x:convert_to_str_if_poss(x))
+    industry_list = industry_list.loc[industry_list['dtype'] == gmd_ind_dtype].drop('dtype',axis=1)
+    industry_list['indata'] = industry_list['indata'].astype(gmd_ind_dtype)
+
+    # if gmd_ind_dtype == 'str':
+        # industry_list['indata'] = industry_list['indata'].apply(lambda x:convert_to_str_if_poss(x))
+
     industry_dict = industry_list.set_index('indata').to_dict()['industrycode']
-    expanded_industry_dict = {float('nan'):None,np.nan:None}
-    #industry_list.to_csv('inslist.csv')
+    return industry_dict
 
-    for _i in industry_dict:
-        expanded_industry_dict[_i] = industry_dict[_i]
-        try: expanded_industry_dict[int(_i)] = industry_dict[_i]
-        except: pass
-        try: expanded_industry_dict[float(_i)] = industry_dict[_i]
-        except: pass
-
-    return expanded_industry_dict
+def update_industry_dict(df,column='industry'):
+    tmp = df.reset_index().set_index(column)
+    tmp = tmp.loc[~tmp.index.duplicated(keep='first'),:]
+    tmp = tmp.reset_index()
+    tmp[column].to_csv('~/Desktop/tmp/industries.csv')
 
 
-def find_indus(rawdataframe,industry_list):
+def find_indus(rawdataframe,industry_list,):
 
     # initiaize
     has_sectoral_employment_data = True
-    rawdataframe["newindus"]=np.nan
-
-    # get dictionary for translation to major sectors
-    industry_dict = get_industry_dict(industry_list)
 
     # look for input data
-    if 'industrycat10' in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'industrycat10':'industry'})
-    elif 'industrycat4' in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'industrycat4':'industry'})
+    if 'industrycat4' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat4':'industry'},inplace=True)
+    elif 'industrycat10' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat10':'industry'},inplace=True)
+
+    # get dictionary for translation to major sectors
+    industry_dict = get_industry_dict(industry_list,rawdataframe['industry'].dtypes)
         
     # set lstatus flag
     has_lstatus = 'lstatus' in rawdataframe.columns
 
-    rawdataframe.loc[rawdataframe['lstatus']==1,'newindus'] = rawdataframe.loc[rawdataframe['lstatus']==1,'industry'].replace(industry_dict,inplace=False)
-    rawdataframe.head(10).to_csv('~/Desktop/tmp/ind_labor.csv')
+    # update dictionary
+    # update_industry_dict(rawdataframe['industry'])    
+    rawdataframe['industry'].replace(industry_dict,inplace=True)
 
-    assert(False)
-
-    for ii in rawdataframe.index:
-        _row = rawdataframe.loc[ii].copy()
-        if not has_lstatus or has_lstatus and _row['lstatus'] == 1:
-            try: rawdataframe.loc[ii,'newindus'] = industry_dict[_row['industry']]
-            except: pass
-
-    if rawdataframe.dropna(how='any',subset=['newindus']).shape[0] == 0: 
+    if rawdataframe.dropna(how='any',subset=['industry']).shape[0] == 0: 
         has_sectoral_employment_data = False
         print('this country survey does not have employment data!') 
     return rawdataframe, has_sectoral_employment_data
@@ -144,8 +137,8 @@ def associate_indus_to_head(rawdataframe,hhcat):
 def indus_to_bool(rawdataframe,industringlist,useskill=False):
     for industring in industringlist:
         newstring='is'+industring
-        rawdataframe[newstring]=(rawdataframe['isanadult']&(rawdataframe['newindus']==industring))+0
-    rawdataframe['noindustry']=(rawdataframe['isanadult']&isnull(rawdataframe['newindus']))+0
+        rawdataframe[newstring]=(rawdataframe['isanadult']&(rawdataframe['industry']==industring))+0
+    rawdataframe['noindustry']=(rawdataframe['isanadult']&isnull(rawdataframe['industry']))+0
     return rawdataframe
 	
 def associate_cat2people(rawdataframe,hhcat):
@@ -205,8 +198,8 @@ def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=F
     # - 2) weights is the weight of each hh head 
     # - 3) pop_description is a summary of total population: number of children, skilled people etc"
 
-    try: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index)
-    except: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe['wgt']),:].index)
+    try: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index).dropna(how='all')
+    except: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe['wgt']),:].index).dropna(how='all')
 
     rawdataframe=convert_int_to_float(rawdataframe)
     rawdataframe=del_missing_Y(rawdataframe)
@@ -218,10 +211,7 @@ def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=F
 
     # get industry info
     rawdataframe,has_sectoral_employment_data=find_indus(rawdataframe,industry_list)
-    #if not has_sectoral_employment_data: return None, has_sectoral_employment_data
-
-    print(has_sectoral_employment_data)
-    assert(False)
+    if not has_sectoral_employment_data: return None, has_sectoral_employment_data
 
     rawdataframe=create_age_col(rawdataframe)
     rawdataframe=create_urban_col(rawdataframe)
@@ -430,9 +420,9 @@ def get_ppp_factors(countrycode,x,ppp_df):
 
 def create_correct_data(mf,countrycode,issplit=False):
 
-    print(mf.country_file_dict[countrycode])
-    try: rawdataframe=read_csv(mf.data_gmd_raw+mf.country_file_dict[countrycode])
-    except: rawdataframe=read_stata(mf.data_gmd_raw+mf.country_file_dict[countrycode])
+    path = mf.data_gmd_raw+mf.country_file_dict[countrycode]
+    rawdataframe=read_stata(path,convert_categoricals=False)
+
     rawdataframe.head(10).to_csv('~/Desktop/tmp/{}.csv'.format(countrycode))
 
     # datalevel is used for PPP weighting

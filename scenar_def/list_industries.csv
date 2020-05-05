@@ -1,45 +1,56 @@
-indata,industrycode
-Commerce,serv
-Transports and comnunications,serv
-Others,serv
-Community and family oriented services,serv
-Agriculture,ag
-Construction,manu
-Manufacturing,manu
-Mining,manu
-Financial and business-oriented services,serv
-Public utilities,serv
-Transport and telecomnunications,serv
-Others not well specified,serv
-Communal serv.,serv
-"Agriculture, Hunting, etc.",ag
-Public services,serv
-"Retail, Hotels",serv
-Finance and business serv.,serv
-Financial and business-serv,serv
-Public administration,serv
-Other services,serv
-Unspecified,serv
-Communal services,serv
-Agriculture and fishing,ag
-"Transportation, storage and communication",serv
-Manufacture,manu
-Financial insurance and real estate,serv
-Electricity and utilities,serv
-Communal Services,serv
-servicios comunales,serv
-Finance and insurance serv.,serv
-11,serv
-1,ag
-3,manu
-10,serv
-9,serv
-6,serv
-7,serv
-5,manu
-4,serv
-8,serv
-2,manu
-"Reatil, Hotels",serv
-Transports and communications,serv
-Service,serv
+dtype,indata,industrycode
+int,11,serv
+int,1,ag
+int,3,manu
+int,10,serv
+int,9,serv
+int,6,serv
+int,7,serv
+int,5,manu
+int,4,serv
+int,8,serv
+int,2,manu
+float,11,serv
+float,1,ag
+float,3,manu
+float,10,serv
+float,9,serv
+float,6,serv
+float,7,serv
+float,5,manu
+float,4,serv
+float,8,serv
+float,2,manu
+str,Commerce,serv
+str,Transports and comnunications,serv
+str,Others,serv
+str,Community and family oriented services,serv
+str,Agriculture,ag
+str,Construction,manu
+str,Manufacturing,manu
+str,Mining,manu
+str,Financial and business-oriented services,serv
+str,Public utilities,serv
+str,Transport and telecomnunications,serv
+str,Others not well specified,serv
+str,Communal serv.,serv
+str,"Agriculture, Hunting, etc.",ag
+str,Public services,serv
+str,"Retail, Hotels",serv
+str,Finance and business serv.,serv
+str,Financial and business-serv,serv
+str,Public administration,serv
+str,Other services,serv
+str,Unspecified,serv
+str,Communal services,serv
+str,Agriculture and fishing,ag
+str,"Transportation, storage and communication",serv
+str,Manufacture,manu
+str,Financial insurance and real estate,serv
+str,Electricity and utilities,serv
+str,Communal Services,serv
+str,servicios comunales,serv
+str,Finance and insurance serv.,serv
+str,"Reatil, Hotels",serv
+str,Transports and communications,serv
+str,Service,serv
