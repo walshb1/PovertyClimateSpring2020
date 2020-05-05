@@ -53,7 +53,7 @@ class mainframe():
             self.country_file_dict[cname] = self.list_raw[skimname]
 
         self.rich_countries = []#'AUT','BEL']
-        self.countries_to_skip = []#['IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
+        self.countries_to_skip = ['IDN','IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
 
 
     def dta_to_csv(self):
@@ -70,6 +70,7 @@ class mainframe():
         except: record = pd.DataFrame({'is_high_income':None,
                                        'GMD_has_sectoral_employment_data':None,
                                        'GMD_has_skill_level':None,
+                                       'GMD_other_failures':None,
                                        'skim_is_final':None,
                                        'BAU_complete':None,
                                        'CC_complete':None},index=self.list_countries)
@@ -88,7 +89,7 @@ class mainframe():
             except: print('cant find wbreg for ',countrycode)
 
             # Check if this is necessary
-            #if countrycode in record.index and record.loc[countrycode,'skim_is_final']: continue
+            if countrycode in record.index and record.loc[countrycode,'skim_is_final']: continue
     		#if countrycode in record.index and record.loc[countrycode,'BAU_complete']: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_skill_level']: continue
@@ -96,8 +97,7 @@ class mainframe():
             print('\n--> running',countrycode)
             record.loc[countrycode,['is_high_income','GMD_has_sectoral_employment_data','GMD_has_skill_level','skim_is_final']] = [False,False,None,None]
                 
-            if True:
-            # try:
+            try:
                 finalhhframe, failure_types = create_correct_data(self,countrycode)
                 has_sectoral_employment_data,has_skill_level = failure_types
                 record.loc[countrycode,'GMD_has_sectoral_employment_data'] = has_sectoral_employment_data
@@ -117,12 +117,11 @@ class mainframe():
                     finalhhframe = finalhhframe.dropna(how='all',axis=1)
                     finalhhframe.to_csv(self.finalhhdataframes+countrycode+'_finalhhframe.csv',encoding='utf-8',index=False)
                     print('got final df for '+countrycode)
-                    record.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [True,False,False]
+                    record.loc[countrycode,'skim_is_final'] = True
                 
-            else:    
-            # except:
+            except:
                 print('...multiple failures')
-                record.loc[countrycode,['skim_is_final','BAU_complete','CC_complete']] = [False,False,False]
+                record.loc[countrycode,['GMD_other_failures','skim_is_final']] = [True,False]
             
             # update GMD record
             record.sort_index().to_csv(self.data_gmd+'GMD_to_finalhhframe_status.csv')

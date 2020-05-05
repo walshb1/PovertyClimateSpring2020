@@ -81,6 +81,9 @@ def find_indus(rawdataframe,industry_list,):
     # look for input data
     if 'industrycat4' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat4':'industry'},inplace=True)
     elif 'industrycat10' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat10':'industry'},inplace=True)
+    else:
+        print('does not have employment data...abort')
+        return None, False
 
     # get dictionary for translation to major sectors
     industry_dict = get_industry_dict(industry_list,rawdataframe['industry'].dtypes)
