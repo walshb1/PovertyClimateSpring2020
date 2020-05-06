@@ -59,10 +59,6 @@ def get_industry_dict(industry_list,gmd_ind_dtype):
 
     industry_list = industry_list.loc[industry_list['dtype'] == gmd_ind_dtype].drop('dtype',axis=1)
     industry_list['indata'] = industry_list['indata'].astype(gmd_ind_dtype)
-
-    # if gmd_ind_dtype == 'str':
-        # industry_list['indata'] = industry_list['indata'].apply(lambda x:convert_to_str_if_poss(x))
-
     industry_dict = industry_list.set_index('indata').to_dict()['industrycode']
     return industry_dict
 
@@ -441,25 +437,27 @@ def create_correct_data(mf,countrycode,issplit=False):
     except:
         try: rawdataframe['skilled'] = rawdataframe['educat4'].copy()
         except: has_skill = False
+            
+    # set welfare (annual per capita income/consumption in LCU) -> daily ppp
+    # rawdataframe['Y'] = welfare/cpi2011/icp2011/365
+    rawdataframe['Y'] = rawdataframe.eval('welfare/cpi2011/icp2011/365')
 
-    for essential_col in [['Y','welfare',0],
-                          ['wgthh2007','weight',0],
+    # if use_minh_file:
+        # conv_df = read_stata('finalhhdataframes/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
+        # conv_df = conv_df.loc[(conv_df.code==countrycode)&(conv_df.year==rawdataframe.year.mean())]
+        # ppp = rawdataframe.apply(lambda x:get_ppp_factors(countrycode,x,conv_df),axis=1)
+        # rawdataframe['Y'] = ppp*rawdataframe['welfare']
+
+        #ppp_df.to_csv('~/Desktop/tmp/ppp.csv')
+        #ppp_df = ppp_df.loc[(ppp_df.code==countrycode)&(ppp_df.datalevel==df_datalevel)&(ppp_df.year==rawdataframe.year.mean())]
+        #rawdataframe['Y'] = rawdataframe['welfare']/ppp_df[['cpi2011','icp2011']].prod(axis=1).squeeze()
+        
+    for essential_col in [['wgthh2007','weight',0],
                           ['idh','hhid',-1]]:
 
         if essential_col[0] not in rawdataframe.columns:
             rawdataframe[essential_col[0]] = rawdataframe[essential_col[1]].copy().fillna(essential_col[2])
-        
-        #if essential_col[0] == 'Y':
-            #conv_df = read_stata('finalhhdataframes_GMD/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
-            #conv_df = conv_df.loc[(conv_df.code==countrycode)&(conv_df.year==rawdataframe.year.mean())]
-            #ppp = rawdataframe.apply(lambda x:get_ppp_factors(countrycode,x,conv_df),axis=1)
-            #rawdataframe['Y'] = ppp*rawdataframe['welfare']
 
-            #ppp_df.to_csv('~/Desktop/tmp/ppp.csv')
-            #ppp_df = ppp_df.loc[(ppp_df.code==countrycode)&(ppp_df.datalevel==df_datalevel)&(ppp_df.year==rawdataframe.year.mean())]
-            #
-            #rawdataframe['Y'] = rawdataframe['welfare']/ppp_df[['cpi2011','icp2011']].prod(axis=1).squeeze()
-            
 
     listofdeciles=np.sort(np.append(np.arange(0.1, 1.1, 0.1),[0.99]))
     if issplit:

@@ -4,4 +4,4 @@ import pandas as pd
 mf = mainframe('spring2020_BW')
 print(mf.nameofthisround)
 
-mf.raw_to_skims()
+mf.raw_to_skims(reset=True)

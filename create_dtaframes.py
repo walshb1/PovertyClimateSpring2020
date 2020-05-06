@@ -65,20 +65,26 @@ class mainframe():
             print('--> wrote {} to csv'.format(dta_code))
 
 
-    def load_gmd_record(self):
-        try: record = read_csv(self.data_gmd+'/GMD_to_finalhhframe_status.csv').set_index('country')
-        except: record = pd.DataFrame({'is_high_income':None,
-                                       'GMD_has_sectoral_employment_data':None,
-                                       'GMD_has_skill_level':None,
-                                       'GMD_other_failures':None,
-                                       'skim_is_final':None,
-                                       'BAU_complete':None,
-                                       'CC_complete':None},index=self.list_countries)
+    def load_gmd_record(self,reset=False):
+        try: 
+            if reset: assert(False)
+            record = read_csv(self.data_gmd+'/GMD_to_finalhhframe_status.csv').set_index('country')
+        except: 
+            record = pd.DataFrame({'is_high_income':None,
+                                   'GMD_has_sectoral_employment_data':None,
+                                   'GMD_has_skill_level':None,
+                                   'GMD_other_failures':None,
+                                   'skim_is_final':None,
+                                   'BAU_complete':None,
+                                   'CC_complete':None},index=self.list_countries)
+            record.index.name='country'
+
+        record = record.loc[~record.index.duplicated(keep='first')]
         return record        
 
 
-    def raw_to_skims(self,subset=None):
-        record = self.load_gmd_record()
+    def raw_to_skims(self,subset=None,reset=False):
+        record = self.load_gmd_record(reset)
 
         if not subset: subset = self.list_countries 
         for countrycode in subset:
@@ -88,14 +94,17 @@ class mainframe():
             try: wbreg = self.codes.loc[self.codes['country']==reverse_correct_countrycode(countrycode),'wbregion'].values
             except: print('cant find wbreg for ',countrycode)
 
-            # Check if this is necessary
-            if countrycode in record.index and record.loc[countrycode,'skim_is_final']: continue
-    		#if countrycode in record.index and record.loc[countrycode,'BAU_complete']: continue
+            # record if high income
+            record.loc[countrycode,'is_high_income'] = True if wbreg == 'YHI' else False
+
+
+            # Check if this has completed
+            if countrycode in record.index and record.loc[countrycode,'skim_is_final']==True: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_skill_level']: continue
 
             print('\n--> running',countrycode)
-            record.loc[countrycode,['is_high_income','GMD_has_sectoral_employment_data','GMD_has_skill_level','skim_is_final']] = [False,False,None,None]
+
                 
             try:
                 finalhhframe, failure_types = create_correct_data(self,countrycode)
