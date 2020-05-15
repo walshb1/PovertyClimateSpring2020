@@ -289,7 +289,7 @@ def apply_industry_dict(survey_response,ind_dict=ind_dict):
 	#print(survey_response,type(survey_response))
 	return None
 
-def estime_income(hhcat,finalhhframe,countrycode,year,with_person_data=False):
+def estime_income(hhcat,finalhhframe,countrycode,year,with_person_data=True):
 	if with_person_data:
 
 		gmd_skim = read_csv('GMD_skims/'+countrycode+'.csv').set_index('hhid')
@@ -363,7 +363,69 @@ def estime_income(hhcat,finalhhframe,countrycode,year,with_person_data=False):
 			      /gmd_skim.loc[(gmd_skim['age']>64),_weight].sum())
 
 		return out
-	
+	else:
+		select     = finalhhframe.Y<float(perc_with_spline(finalhhframe.Y,finalhhframe.weight*finalhhframe.nbpeople,0.95))
+		X          = finalhhframe.ix[select,['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers','cat7workers','old']].copy()
+		w          = finalhhframe.ix[select,'weight'].copy()
+		w[w==0]    = 10**(-10)
+		Y          = (finalhhframe.ix[select,'Y']*finalhhframe.ix[select,'nbpeople'])
+		result     = sm.WLS(Y, X, weights=1/w).fit()
+		inc        = result.params
+		nonworkers = inc[['cat7workers','old']].copy()
+		negs       = nonworkers[nonworkers<0].index
+		if len(negs)>0:
+			X.drop(negs.values,axis=1,inplace=True)
+			result = sm.WLS(Y, X, weights=1/w).fit()
+			inc    = result.params
+			for ii in negs:
+				inc[ii] = 0
+		a        = result.pvalues
+		nonsign1 = a[a>0.05].index
+		nonsign2 = []
+		nonsign3 = []
+		if len(nonsign1)>0:
+			X         = finalhhframe.ix[select,['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers','cat7workers','old']].copy()
+			X['serv'] = X['cat1workers']+X['cat2workers']
+			X['ag']   = X['cat3workers']+X['cat4workers']
+			X['manu'] = X['cat5workers']+X['cat6workers']
+			X.drop(['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers'],axis=1,inplace=True)
+			result3   = sm.WLS(Y, X, weights=1/w).fit()
+			a3        = result3.pvalues
+			nonsign3  = a3[a3>0.05].index
+			if (len(nonsign3)==0):
+				inctemp            = result3.params
+				inc['cat2workers'] = inctemp['serv']
+				inc['cat4workers'] = inctemp['ag']
+				inc['cat6workers'] = inctemp['manu']
+				inc['cat1workers'] = inctemp['serv']
+				inc['cat3workers'] = inctemp['ag']
+				inc['cat5workers'] = inctemp['manu']
+			else:
+				X         = finalhhframe.ix[select,['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers','cat7workers','old']].copy()
+				X['skilled']   = X['cat2workers']+X['cat4workers']+X['cat6workers']
+				X['unskilled'] = X['cat1workers']+X['cat3workers']+X['cat5workers']
+				X.drop(['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers'],axis=1,inplace=True)
+				result2        = sm.WLS(Y, X, weights=1/w).fit()
+				a2             = result2.pvalues
+				nonsign2       = a2[a2>0.05].index
+				if len(nonsign2)==0|((len(nonsign2)<len(nonsign1))&(len(nonsign2)<len(nonsign3))):
+					inctemp           = result2.params
+					inc['cat2workers']= inctemp['skilled']
+					inc['cat4workers']= inctemp['skilled']
+					inc['cat6workers']= inctemp['skilled']
+					inc['cat1workers']= inctemp['unskilled']
+					inc['cat3workers']= inctemp['unskilled']
+					inc['cat5workers']= inctemp['unskilled']
+				else:
+					if (len(nonsign3)<len(nonsign1))&(len(nonsign3)<len(nonsign2)):
+						inctemp            = result3.params
+						inc['cat2workers'] = inctemp['serv']
+						inc['cat4workers'] = inctemp['ag']
+						inc['cat6workers'] = inctemp['manu']
+						inc['cat1workers'] = inctemp['serv']
+						inc['cat3workers'] = inctemp['ag']
+						inc['cat5workers'] = inctemp['manu']
+		return inc
 
 #
 #moved below function to lib_for_country_run()
