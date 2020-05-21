@@ -38,6 +38,7 @@ class mainframe():
         if self.nameofthisround == 'spring2020_BW': 
             self.data_gmd = self.model+'/../GMD/'
             self.data_gmd_raw = self.model+'/../GMD/GMD2020/'
+            self.data_silc = self.model+'/../GMD/SILC_employment/'
             self.data_gmd_skims = self.model+'/../GMD/skims/'
         else: 
             self.data_gmd_raw = self.model+'/../' # your directory structure, outside of GIT
@@ -126,7 +127,7 @@ class mainframe():
                     finalhhframe = finalhhframe.dropna(how='all',axis=1)
                     finalhhframe.to_csv(self.finalhhdataframes+countrycode+'_finalhhframe.csv',encoding='utf-8',index=False)
                     print('got final df for '+countrycode)
-                    record.loc[countrycode,'skim_is_final'] = True
+                    record.loc[countrycode,['GMD_other_failures','skim_is_final']] = [False,True]
                 
             except:
                 print('...multiple failures')

@@ -1,4 +1,4 @@
-from pandas import read_excel,concat,Series,DataFrame,read_csv,isnull,notnull,read_stata,merge
+import pandas as pd
 import numpy as np
 from scipy import interpolate
 import os
@@ -16,7 +16,7 @@ def some(rawdataframe, n):
 	
 def split_big_dframe(finalhhframe,hhcat):
     a=finalhhframe[['weight','reg02']].groupby('reg02').apply(lambda x:x['weight'].count())
-    b=DataFrame(a,columns=['count'])
+    b=pd.DataFrame(a,columns=['count'])
     c=b.sort(columns=['count'],ascending=False)
     bool1 = c.cumsum()<c.cumsum()['count'].iloc[-1]/2
     list_reg = list(c[bool1].dropna().index)
@@ -36,8 +36,8 @@ def convert_int_to_float(rawdataframe):
 	
 def del_missing_Y(rawdataframe):
     "delete rows with missing income and distribute weights"
-    rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index)
-    missing=isnull(rawdataframe["Y"])
+    rawdataframe=rawdataframe.drop(rawdataframe.loc[pd.isnull(rawdataframe["wgthh2007"]),:].index)
+    missing=pd.isnull(rawdataframe["Y"])
     add2wgt=rawdataframe.loc[missing,'wgthh2007'].sum()
     scal=rawdataframe['wgthh2007'].sum()/(rawdataframe['wgthh2007'].sum()-add2wgt)
     rawdataframe=rawdataframe.drop(rawdataframe.loc[missing,:].index)
@@ -68,21 +68,35 @@ def update_industry_dict(df,column='industry'):
     tmp = tmp.reset_index()
     tmp[column].to_csv('~/Desktop/tmp/industries.csv')
 
+def get_SILC_employment_file(countrycode,mf,rawdataframe):
 
-def find_indus(rawdataframe,industry_list,):
+    for _ in os.listdir(mf.data_silc):
 
-    # initiaize
+        if countrycode in _: 
+            df = pd.read_stata(mf.data_silc+'/'+_)
+            df['hhid'] = df['hhid'].astype(rawdataframe['hhid'].dtype)
+            df['pid'] = df['pid'].astype(rawdataframe['pid'].dtype)
+            df = df.reset_index(drop=True).set_index(['hhid','pid'])
+            rawdataframe = pd.merge(rawdataframe,df,left_on=['hhid','pid'],right_index=True).rename(columns={'pl111':'industry'})
+            return rawdataframe
+
+def find_indus(countrycode,rawdataframe,mf):
+
+    # initialize
     has_sectoral_employment_data = True
 
     # look for input data
     if 'industrycat4' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat4':'industry'},inplace=True)
     elif 'industrycat10' in rawdataframe.columns: rawdataframe.rename(columns={'industrycat10':'industry'},inplace=True)
-    else:
-        print('does not have employment data...abort')
-        return None, False
+    else: 
+        try: 
+            rawdataframe = get_SILC_employment_file(countrycode,mf,rawdataframe)
+        except: 
+            print('does not have employment data...abort')
+            return None, False
 
     # get dictionary for translation to major sectors
-    industry_dict = get_industry_dict(industry_list,rawdataframe['industry'].dtypes)
+    industry_dict = get_industry_dict(mf.industry_list,rawdataframe['industry'].dtypes)
         
     # set lstatus flag
     has_lstatus = 'lstatus' in rawdataframe.columns
@@ -137,7 +151,7 @@ def indus_to_bool(rawdataframe,industringlist,useskill=False):
     for industring in industringlist:
         newstring='is'+industring
         rawdataframe[newstring]=(rawdataframe['isanadult']&(rawdataframe['industry']==industring))+0
-    rawdataframe['noindustry']=(rawdataframe['isanadult']&isnull(rawdataframe['industry']))+0
+    rawdataframe['noindustry']=(rawdataframe['isanadult']&pd.isnull(rawdataframe['industry']))+0
     return rawdataframe
 	
 def associate_cat2people(rawdataframe,hhcat):
@@ -190,36 +204,43 @@ def reshape_data(income):
 	data = np.reshape(income.values,(len(income.values))) 
 	return data
 	
-def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=False):
+def get_pop_description(countrycode,rawdataframe,mf,listofdeciles,issplit=False):
 
     # Extracts the three main components of our pb from the country dataframe: 
     # - 1) characteristics is a matrix that has all important household characteristics in columns and hh heads in lines. 
     # - 2) weights is the weight of each hh head 
     # - 3) pop_description is a summary of total population: number of children, skilled people etc"
 
-    try: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe["wgthh2007"]),:].index).dropna(how='all')
-    except: rawdataframe=rawdataframe.drop(rawdataframe.loc[isnull(rawdataframe['wgt']),:].index).dropna(how='all')
+    try: rawdataframe=rawdataframe.drop(rawdataframe.loc[pd.isnull(rawdataframe["wgthh2007"]),:].index).dropna(how='all')
+    except: rawdataframe=rawdataframe.drop(rawdataframe.loc[pd.isnull(rawdataframe['wgt']),:].index).dropna(how='all')
 
     rawdataframe=convert_int_to_float(rawdataframe)
     rawdataframe=del_missing_Y(rawdataframe)
     rawdataframe=correct_zeroY(rawdataframe)
 
     # head of household info
+    rawdataframe.to_csv('~/Desktop/tmp/{}.csv'.format(countrycode))
     try: rawdataframe['ishead']=rawdataframe['head']=="Head of household"
-    except: rawdataframe['ishead']=rawdataframe['relationharm']==1
+    except: 
+        try: rawdataframe['ishead']=rawdataframe['relationharm']==1
+        except: 
+            rawdataframe = rawdataframe.reset_index(drop=True).set_index('hhid')
+            rawdataframe['ishead'] = False
+            rawdataframe.loc[~(rawdataframe.index.duplicated(keep='first')),'ishead'] = True
+            rawdataframe = rawdataframe.reset_index()
 
     # get industry info
-    rawdataframe,has_sectoral_employment_data=find_indus(rawdataframe,industry_list)
+    rawdataframe,has_sectoral_employment_data=find_indus(countrycode,rawdataframe,mf)
     if not has_sectoral_employment_data: return None, has_sectoral_employment_data
 
     rawdataframe=create_age_col(rawdataframe)
     rawdataframe=create_urban_col(rawdataframe)
 
     rawdataframe=indus_to_bool(rawdataframe,['serv','manu','ag'])
-    rawdataframe=associate_cat2people(rawdataframe,hhcat)
+    rawdataframe=associate_cat2people(rawdataframe,mf.hhcat)
 
     # rawdataframe['isskillworker']=rawdataframe['skill']&(rawdataframe['isanadult'])&(~rawdataframe['noindustry'])
-    # rawdataframe=associate_indus_to_head(rawdataframe,hhcat)
+    # rawdataframe=associate_indus_to_head(rawdataframe,mf.hhcat)
     #keep households instead of people.
     hhdataframe=rawdataframe.groupby('idh').apply(lambda x:x.head(1))
     hhdataframe.index=hhdataframe['idh'].values
@@ -235,8 +256,8 @@ def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=F
     hhdataframe=sumoverhh(hhdataframe,rawdataframe,'old','isold')
     hhdataframe=sumoverhh(hhdataframe,rawdataframe,'urban','isurban')
 
-    #calculate the number of workers in each category defined in hhcat
-    hhdataframe=intensify_cat_columns(hhdataframe,rawdataframe,hhcat)	
+    #calculate the number of workers in each category defined in mf.hhcat
+    hhdataframe=intensify_cat_columns(hhdataframe,rawdataframe,mf.hhcat)	
     # hhdataframe=deal_with_head_issues(hhdataframe)
     #calculates the decile of each hh and adds a column
     deciles=wp(reshape_data(hhdataframe['Y']),reshape_data(hhdataframe['totwgt']),listofdeciles,cum=False)
@@ -244,10 +265,10 @@ def get_pop_description(rawdataframe,hhcat,industry_list,listofdeciles,issplit=F
 
     #columns to keep for description of population
     if not issplit:
-        int_columns=['children','old','urban','decile']+['cat{}workers'.format(thecat) for thecat in hhcat['hhcat'].unique()]
+        int_columns=['children','old','urban','decile']+['cat{}workers'.format(thecat) for thecat in mf.hhcat['hhcat'].unique()]
         finalhhframe=merges_rows(int_columns,hhdataframe)
     else:
-        int_columns=['idh','Y','totY','reg02','children','old','decile','urban']+['cat{}workers'.format(thecat) for thecat in hhcat['hhcat'].unique()]
+        int_columns=['idh','Y','totY','reg02','children','old','decile','urban']+['cat{}workers'.format(thecat) for thecat in mf.hhcat['hhcat'].unique()]
         finalhhframe=hhdataframe[int_columns]
         finalhhframe['totweight']=hhdataframe['totwgt']
         finalhhframe['weight']=hhdataframe['wgthh2007']
@@ -267,7 +288,7 @@ def merges_rows(int_columns,hhdataframe):
     inter_c=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x[int_columns].head(1))
     inter_it=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x['totY'].mean())
     inter_i=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x['Y'].mean())
-    finalhhframe=DataFrame(inter_c.values,columns=int_columns,index=indexes.values)
+    finalhhframe=pd.DataFrame(inter_c.values,columns=int_columns,index=indexes.values)
     # finalhhframe.drop('decile', axis=1, inplace=True)
     finalhhframe['totweight']=inter_wh.values
     finalhhframe['weight']=inter_w.values
@@ -285,7 +306,7 @@ def merges_rows_bis(int_columns,hhdataframe):
     inter_c=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x[int_columns].head(1))
     inter_it=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x['totY'].mean())
     inter_i=hhdataframe.groupby(int_columns,sort=False).apply(lambda x: x['Y'].mean())
-    finalhhframe=DataFrame(inter_c.values,columns=int_columns,index=indexes.values)
+    finalhhframe=pd.DataFrame(inter_c.values,columns=int_columns,index=indexes.values)
     # finalhhframe.drop('decile', axis=1, inplace=True)
     finalhhframe['totweight']=inter_wh.values
     finalhhframe['weight']=inter_w.values
@@ -420,19 +441,18 @@ def get_ppp_factors(countrycode,x,ppp_df):
 def create_correct_data(mf,countrycode,issplit=False):
 
     path = mf.data_gmd_raw+mf.country_file_dict[countrycode]
-    rawdataframe=read_stata(path,convert_categoricals=False)
+    rawdataframe=pd.read_stata(path,convert_categoricals=False)
 
-    rawdataframe.head(10).to_csv('~/Desktop/tmp/{}.csv'.format(countrycode))
+    # rawdataframe.head(10).to_csv('~/Desktop/tmp/{}.csv'.format(countrycode))
 
     # datalevel is used for PPP weighting
     if (countrycode != 'IND' and countrycode != 'IDN' and countrycode != 'CHN'): rawdataframe['datalevel'] = 2
 
-    has_skill = True
-    
     # get weight
     if 'weight' not in rawdataframe.columns: rawdataframe = rawdataframe.rename(columns={'weight_h':'weight'})
 
     # get education level
+    has_skill = True
     try: rawdataframe['skilled'] = rawdataframe['educy'].copy()
     except:
         try: rawdataframe['skilled'] = rawdataframe['educat4'].copy()
@@ -443,7 +463,7 @@ def create_correct_data(mf,countrycode,issplit=False):
     rawdataframe['Y'] = rawdataframe.eval('welfare/cpi2011/icp2011/365')
 
     # if use_minh_file:
-        # conv_df = read_stata('finalhhdataframes/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
+        # conv_df = pd.read_stata('finalhhdataframes/_Final_CPI_PPP_to_be_used.dta')[['code','year','datalevel','cpi2011','icp2011']]
         # conv_df = conv_df.loc[(conv_df.code==countrycode)&(conv_df.year==rawdataframe.year.mean())]
         # ppp = rawdataframe.apply(lambda x:get_ppp_factors(countrycode,x,conv_df),axis=1)
         # rawdataframe['Y'] = ppp*rawdataframe['welfare']
@@ -461,9 +481,9 @@ def create_correct_data(mf,countrycode,issplit=False):
 
     listofdeciles=np.sort(np.append(np.arange(0.1, 1.1, 0.1),[0.99]))
     if issplit:
-        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,mf.hhcat,mf.industry_list,listofdeciles,issplit=True)
+        finalhhframe, has_sectoral_employment_data = get_pop_description(countrycode,rawdataframe,mf,listofdeciles,issplit=True)
     else:
-        finalhhframe, has_sectoral_employment_data = get_pop_description(rawdataframe,mf.hhcat,mf.industry_list,listofdeciles)
+        finalhhframe, has_sectoral_employment_data = get_pop_description(countrycode,rawdataframe,mf,listofdeciles)
     
     if finalhhframe is not None:
         if finalhhframe["idh"].dtype=='O':
