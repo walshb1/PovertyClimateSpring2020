@@ -7,7 +7,7 @@ import os
 
 switches_as_cols = ['switch_ag_rev','switch_temp','switch_ag_prices','switch_disasters','switch_health']
 
-def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_value=0,future_with_cc=False):
+def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_value=0,future_with_cc=False, with_person_data=True):
 	
 	# Runs one scenario for one country (with 1 SSP(2+4 for now) and baseline/climate)
 	# --> Returns a dataframe with aggregated results per scenario.
@@ -34,6 +34,9 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 		_ = DataFrame([[countrycode,year,scenar]],columns=['country','year','scenar'])
 		return _,_,_
 	else: finalhhframe,countrycode,istoobig,wbreg = out
+	print(np.min(finalhhframe.weight*finalhhframe.nbpeople), np.min(finalhhframe.weight), np.min(finalhhframe.nbpeople))
+	finalhhframe.dropna(inplace=True)
+	finalhhframe.reset_index(inplace=True, drop=True)
 	print('Step 2 complete')
 	
 	
@@ -41,7 +44,7 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 	# STEP 3: estimate income
 	print(ini_year,'to',year)
 
-	inc,characteristics,ini_pop_desc,inimin = estimate_income_and_all(hhcat,finalhhframe,countrycode,ini_year,with_person_data=True)
+	inc,characteristics,ini_pop_desc,inimin = estimate_income_and_all(hhcat,finalhhframe,countrycode,ini_year,with_person_data=with_person_data)
 	print('Step 3 complete')
 	#
 	# characteristics = dataframe with row per hh, #individuals who are 
@@ -211,5 +214,5 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 									DataFrame([[prod_gr_serv_cc,prod_gr_ag_cc,prod_gr_manu_cc]],columns=['prod_gr_ag','prod_gr_serv','prod_gr_manu'])],
 								       axis=1),ignore_index=True)
 	
-	return forprim_now,forprim_bau,forprim_cc
+	return forprim_now,forprim_bau,forprim_cc, inc
 
