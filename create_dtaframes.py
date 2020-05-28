@@ -100,10 +100,13 @@ class mainframe():
 
 
             # Check if this has completed
-            if countrycode in record.index and record.loc[countrycode,'skim_is_final']==True: continue
+            has_completed=False
+            for cout in os.listdir(self.finalhhdataframes):
+                if countrycode in cout: has_completed = True
+            # if countrycode in record.index and record.loc[countrycode,'skim_is_final']==True: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
     		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_skill_level']: continue
-
+            if has_completed: continue
             print('\n--> running',countrycode)
 
                 

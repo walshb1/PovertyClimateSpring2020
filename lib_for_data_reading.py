@@ -105,6 +105,7 @@ def find_indus(countrycode,rawdataframe,mf):
     # update_industry_dict(rawdataframe['industry'])    
     rawdataframe['industry'].replace(industry_dict,inplace=True)
 
+
     if rawdataframe.dropna(how='any',subset=['industry']).shape[0] == 0: 
         has_sectoral_employment_data = False
         print('this country survey does not have employment data!') 
