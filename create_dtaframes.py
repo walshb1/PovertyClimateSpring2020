@@ -54,7 +54,7 @@ class mainframe():
             self.country_file_dict[cname] = self.list_raw[skimname]
 
         self.rich_countries = []#'AUT','BEL']
-        self.countries_to_skip = ['IDN','IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
+        self.countries_to_skip = ['IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
 
 
     def dta_to_csv(self):
