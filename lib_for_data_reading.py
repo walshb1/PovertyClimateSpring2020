@@ -499,7 +499,7 @@ def create_correct_data(mf,countrycode,issplit=False):
 	
 def filter_country(countrycode,all_surveys,codes):
 
-    if countrycode in ['SSD','KIR','TUV','AFG']:
+    if countrycode in ['KIR','TUV','AFG']:
         return None
 
     if len(codes.loc[codes['country']==reverse_correct_countrycode(countrycode),'wbregion'])>0:

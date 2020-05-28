@@ -364,6 +364,7 @@ def estime_income(hhcat,finalhhframe,countrycode,year,with_person_data=True):
 
 		return out
 	else:
+		#Bramka retrieved this code from lib_for_growth_model.py file in Julie's master branch of poverty_climate_model
 		select     = finalhhframe.Y<float(perc_with_spline(finalhhframe.Y,finalhhframe.weight*finalhhframe.nbpeople,0.95))
 		X          = finalhhframe.ix[select,['cat1workers','cat2workers','cat3workers','cat4workers','cat5workers','cat6workers','cat7workers','old']].copy()
 		w          = finalhhframe.ix[select,'weight'].copy()
@@ -425,6 +426,14 @@ def estime_income(hhcat,finalhhframe,countrycode,year,with_person_data=True):
 						inc['cat1workers'] = inctemp['serv']
 						inc['cat3workers'] = inctemp['ag']
 						inc['cat5workers'] = inctemp['manu']
+		# calculate/update skill premium
+		_skillprem_file = read_csv('skill_premiums.csv').set_index('countrycode')
+		_skillprem_file = _skillprem_file.append(DataFrame({'service':float(inc['cat2workers']/inc['cat1workers']),
+								    'agricul':float(inc['cat4workers']/inc['cat3workers']),
+								    'manufac':float(inc['cat6workers']/inc['cat5workers'])},index=[countrycode]))
+
+		_skillprem_file.index.name = 'countrycode'
+		_skillprem_file.loc[~(_skillprem_file.index.duplicated(keep='last'))].to_csv('skill_premiums.csv')
 		return inc
 
 #
@@ -799,7 +808,10 @@ def indicators_from_pop_desc(ini_pop_desc):
 	
 		
 def get_fa(countrycode):
-	wb_income_class = read_csv('RedX_summary/wbccodes2014.csv',index_col='country')[['wbincomename']]
+	try:
+		wb_income_class = read_csv('RedX_summary/wbccodes2014.csv',index_col='country')[['wbincomename']]
+	except:
+		wb_income_class = read_csv('wbccodes2014.csv',index_col='country')[['wbincomename']]
 	#
 	wb_income_class.loc['TLS'] = 'Low income'
 	wb_income_class.loc['COD'] = 'Low income'
@@ -842,7 +854,7 @@ def calc_indic(countrycode,income_proj,weights_proj_tot,weights_proj,futurehhfra
 	percentiles                = perc_with_spline(income_proj,weights_proj_tot,np.arange(0,1,0.01))
 	indicators['avg_income_bott20'] = [poverty_indic(percentiles,0,20)]
 	indicators['avg_income'] = [np.average(income_proj,weights=weights_proj_tot)]
-	indicators['avg_income_ifrc_fa'] = [poverty_indic(percentiles,0,int(1E2*get_fa(countrycode)))]
+	#indicators['avg_income_ifrc_fa'] = [poverty_indic(percentiles,0,int(1E2*get_fa(countrycode)))] #still needed?
 	#
 	try: 
 		percentiles_urban  = perc_with_spline(income_proj[urb],weights_proj_tot[urb],np.arange(0,1,0.01))
@@ -1010,7 +1022,7 @@ def calc_indic(countrycode,income_proj,weights_proj_tot,weights_proj,futurehhfra
 	
 	_hhdf = merge(futurehhframe.reset_index(),df.reset_index(),on='hhid')
 	indicators['exposed_pop_Q1'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_bott20'])*365,'totweight'])
-	indicators['exposed_pop_ifrc_fa'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_ifrc_fa'])*365,'totweight'])
+	#indicators['exposed_pop_ifrc_fa'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_ifrc_fa'])*365,'totweight'])
 	indicators['exposed_pop_190'] = sum(_hhdf.loc[_hhdf['190']==True,'totweight'])
 	indicators['exposed_pop_320'] = sum(_hhdf.loc[_hhdf['320']==True,'totweight'])
 	indicators['exposed_pop_1000'] = sum(_hhdf.loc[_hhdf['1000']==True,'totweight'])
@@ -1039,8 +1051,11 @@ def calc_indic(countrycode,income_proj,weights_proj_tot,weights_proj,futurehhfra
 	       ('fa20_tsunami','TSUNAMI'),
 	       ('fa20_riverflood','Riverine_floods')]
 		
-	_rps = read_excel('./data/disasters/gar_for_model_rp=20.xlsx',index_col='ISO',sheetname='rp20_fa').ix[countrycode]
-
+	try:
+		_rps = read_excel('./data/disasters/gar_for_model_rp=20.xlsx',index_col='ISO',sheetname='rp20_fa').ix[countrycode]
+	except:
+		_rps = read_csv('data/disasters/gar_for_model.csv', index_col='ISO').ix[countrycode]
+		_rps.index = [x.replace(' million US$', '') for x in _rps.index]
 	for _out,_in in _fa:
 		indicators[_out] = 1E2*_rps.ix[_in]/2E1
 
