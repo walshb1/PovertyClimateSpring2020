@@ -52,7 +52,7 @@ def run_one_baseline(ssp,inputs,finalhhframe,ini_pop_desc,ssp_pop,year,countryco
 	future_pop_desc,pop_0014=build_new_description(ini_pop_desc,ssp_pop,ssp,year,countrycode,shareag,sharemanu,shareemp,shareurban,istransformationscen=False)
 
 	# record growth rates for baseline:
-	save_out_inputs(countrycode,'base(ssp='+str(ssp)+')',inputs,ini_pop_desc,future_pop_desc)
+	#save_out_inputs(countrycode,'base(ssp='+str(ssp)+')',inputs,ini_pop_desc,future_pop_desc)
 
 	# weights in future times. 
 	weights_proj  = find_new_weights(characteristics,finalhhframe['weight'],future_pop_desc)

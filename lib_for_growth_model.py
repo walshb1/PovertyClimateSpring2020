@@ -517,8 +517,8 @@ def after_bi(countrycode,inc,errorterm,b,finalhhframe,desc_str):
 	basic_income_stats_out.loc[countrycode,'total cost mil. (b={}% ssp{})'.format(str_b,desc_str)] = 1E-6*b*gdpcalc
 	basic_income_stats_out.loc[countrycode,'income per adult (b={}% ssp{})'.format(str_b,desc_str)] = bI
 	basic_income_stats_out = basic_income_stats_out.loc[~(basic_income_stats_out.index.duplicated(keep='last'))]
-	basic_income_stats_out.to_csv('basic_income_stats_out.csv')
-	basic_income_stats_out.stack().to_csv('basic_income_stats_out_stacked.csv')
+	#basic_income_stats_out.to_csv('basic_income_stats_out.csv')
+	#basic_income_stats_out.stack().to_csv('basic_income_stats_out_stacked.csv')
 
 	for thecat in range(1,8):
 		string         = 'cat{}workers'.format(int(thecat))
@@ -889,7 +889,7 @@ def calc_indic(countrycode,income_proj,weights_proj_tot,weights_proj,futurehhfra
 	indicators['gini']         = [gini(income_proj,weights_proj_tot)]
 	indicators['tot_pop']      = [sum(weights_proj*futurehhframe['nbpeople'])]
 	#
-	indicators['pop_190']      = [poor_people(income_proj,weights_proj_tot,1.90*data2day)]
+	indicators['pop_190']      = [poor_people(income_proj,weights_proj_tot,1.90)]
 	indicators['pop_320']      = [poor_people(income_proj,weights_proj_tot,3.20*data2day)]
 	indicators['pop_550']      = [poor_people(income_proj,weights_proj_tot,5.50*data2day)]
 	indicators['pop_1000']      = [poor_people(income_proj,weights_proj_tot,10.00*data2day)]
@@ -1017,15 +1017,15 @@ def calc_indic(countrycode,income_proj,weights_proj_tot,weights_proj,futurehhfra
 	indicators['peopleag']    = sum(futurehhframe.ix[ag,'nbpeople']*futurehhframe.ix[ag,'weight'])
 	indicators['peoplenonag'] = sum(futurehhframe.ix[~ag,'nbpeople']*futurehhframe.ix[~ag,'weight'])
 	#
-	df = read_csv('exposed_pop/{}.csv'.format(countrycode)).set_index('hhid')
-	futurehhframe.index.name = 'hhid'
+	#df = read_csv('exposed_pop/{}.csv'.format(countrycode)).set_index('hhid')
+	#futurehhframe.index.name = 'hhid'
 	
-	_hhdf = merge(futurehhframe.reset_index(),df.reset_index(),on='hhid')
-	indicators['exposed_pop_Q1'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_bott20'])*365,'totweight'])
+	#_hhdf = merge(futurehhframe.reset_index(),df.reset_index(),on='hhid')
+	#indicators['exposed_pop_Q1'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_bott20'])*365,'totweight'])
 	#indicators['exposed_pop_ifrc_fa'] = sum(_hhdf.loc[_hhdf['Y']<=float(indicators['avg_income_ifrc_fa'])*365,'totweight'])
-	indicators['exposed_pop_190'] = sum(_hhdf.loc[_hhdf['190']==True,'totweight'])
-	indicators['exposed_pop_320'] = sum(_hhdf.loc[_hhdf['320']==True,'totweight'])
-	indicators['exposed_pop_1000'] = sum(_hhdf.loc[_hhdf['1000']==True,'totweight'])
+	#indicators['exposed_pop_190'] = sum(_hhdf.loc[_hhdf['190']==True,'totweight'])
+	#indicators['exposed_pop_320'] = sum(_hhdf.loc[_hhdf['320']==True,'totweight'])
+	#indicators['exposed_pop_1000'] = sum(_hhdf.loc[_hhdf['1000']==True,'totweight'])
 
 
 	# quintilesag               = wp(reshape_data(income_proj[ag]),reshape_data(weights_proj_tot[ag]),[0.2,1],cum=True)

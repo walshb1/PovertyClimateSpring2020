@@ -68,9 +68,9 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 	print('Step 5 complete')
 	
 	# Note: in the version designed for the cluster, we get run only one scenario (called scenar) per call of this function
-	#inputs = scenarios.ix[scenar,:]
+	inputs = scenarios.ix[scenar,:]
 	# ^ insert loop over rows in scenarios here
-	inputs = scenarios.mean()
+	#inputs = scenarios.mean()
 
 	print('\n\nRunning mosek fit with these input values:\n',inputs.head(15))
 	
@@ -119,7 +119,8 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 			ranges,ini_pop_out    = scenar_ranges(ssp,ranges,finalhhframe,countrycode,ssp_gdp,codes_tables,ssp_pop,year,ini_year,b_value)
 			scenarios = lhssample.values*np.diff(ranges[['min','max']].values).T+ranges['min'].values
 			scenarios = DataFrame(scenarios,columns=ranges.index)
-			inputs = scenarios.mean()
+			inputs = scenarios.ix[scenar,:]
+			#inputs = scenarios.mean()
 
 		
 		# STEP 7A: run the baseline scenario
@@ -160,9 +161,9 @@ def country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches,b_valu
 				if switch == 'all':
 					switch_temp      = True
 					switch_disasters = True
-					switch_ag_prices = False
-					switch_ag_rev    = False
-					switch_health    = False
+					switch_ag_prices = True
+					switch_ag_rev    = True
+					switch_health    = True
 				else:
 					switch_ag_rev    = switch == 'switch_ag_rev'
 					switch_temp      = switch == 'switch_temp'
