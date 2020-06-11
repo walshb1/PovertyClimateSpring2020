@@ -53,10 +53,13 @@ if not os.path.exists(with_cc):
 	
 #getting the list of available countries
 list_csv=os.listdir(finalhhdataframes)
+
 all_surveys=dict()
 for myfile in list_csv:
-	cc = re.search('(.*)_finalhhframe.csv', myfile).group(1)
-	all_surveys[cc]=read_csv(finalhhdataframes+myfile)
+	try:
+		cc = re.search('(.*)_finalhhframe.csv', myfile).group(1)
+		all_surveys[cc]=read_csv(finalhhdataframes+myfile)
+	except: pass
 
 #load codes, population
 codes         = read_csv('wbccodes2014.csv')
@@ -78,7 +81,7 @@ datalist=(hhcat,industry_list,codes_tables,lhssample,ranges,ssp_pop,ssp_gdp,food
 
 switches = ['all']
 
-for ssp_to_test in [4,5]:
+for ssp_to_test in [4]:
 
 	chosen_scenarios = read_csv("ssp{}_scenarios.csv".format(ssp_to_test))
 
@@ -86,7 +89,7 @@ for ssp_to_test in [4,5]:
 	
 	for ii in chosen_scenarios.index:
 		countrycode = reverse_correct_countrycode(chosen_scenarios.loc[ii,'countrycode'])
-		scenar = chosen_scenarios.loc[ii,'scenar']
+
 		forprim_bau,forprim_cc = country_run(countrycode,scenar,datalist,paramvar,all_surveys,switches)
 
 			

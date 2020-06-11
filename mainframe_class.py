@@ -27,12 +27,12 @@ class mainframe():
         self.iiasa_data        = self.model+'/iiasa_data/'
 
         # simulation inputs
-        self.codes         = read_csv('wbccodes2014.csv')
-        self.codes_tables  = read_csv(self.ssp_folder+"ISO3166_and_R32.csv")
-        self.ssp_pop       = read_csv(self.ssp_folder+"SspDb_country_data_2013-06-12.csv",low_memory=False)
-        self.ssp_gdp       = read_csv(self.ssp_folder+"SspDb_compare_regions_2013-06-12.csv")
-        self.hhcat         = read_csv(self.scenar_folder+"hhcat_v2.csv")
-        self.industry_list = read_csv(self.scenar_folder+"list_industries.csv")
+        self.codes         = pd.read_csv('wbccodes2014.csv')
+        self.codes_tables  = pd.read_csv(self.ssp_folder+"ISO3166_and_R32.csv")
+        self.ssp_pop       = pd.read_csv(self.ssp_folder+"SspDb_country_data_2013-06-12.csv",low_memory=False)
+        self.ssp_gdp       = pd.read_csv(self.ssp_folder+"SspDb_compare_regions_2013-06-12.csv")
+        self.hhcat         = pd.read_csv(self.scenar_folder+"hhcat_v2.csv")
+        self.industry_list = pd.read_csv(self.scenar_folder+"list_industries.csv")
 
         # microdata from GMD
         if self.nameofthisround == 'spring2020_BW': 
@@ -54,22 +54,31 @@ class mainframe():
             self.country_file_dict[cname] = self.list_raw[skimname]
 
         self.rich_countries = []#'AUT','BEL']
-        self.countries_to_skip = ['IND']#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
+        self.countries_to_skip = #['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
 
+        # drivers of scenarios
+        self.uncertainties = ['shareag','sharemanu','shareemp','grserv','grag','grmanu','skillpserv','skillpag','skillpmanu','p','b','voice']
+        self.lhssample     = pd.read_csv(self.scenar_folder+"lhs-table-600-12uncertainties.csv")
+        self.ranges = pd.DataFrame(columns=['min','max'],index=self.uncertainties)
+        self.impact_scenars = pd.read_csv(self.scenar_folder+"impact-scenarios-low-high.csv")
+
+    def get_ini_year(self):
+        for dta in range(len(self.list_raw)):
+            print(dta)
 
     def dta_to_csv(self):
         #list_countries = [_ for _ in os.listdir(data_gmd_dta) if 'DS_Store' not in _]
         for dta in range(len(self.list_raw)):
             dta_code = self.list_raw[dta][0]+self.list_raw[dta][1]+self.list_raw[dta][2]
 
-            read_stata(data_gmd_raw+list_raw[dta]).to_csv(self.data_gmd_raw+'/'+dta_code+'.csv')
+            pd.read_stata(data_gmd_raw+list_raw[dta]).to_csv(self.data_gmd_raw+'/'+dta_code+'.csv')
             print('--> wrote {} to csv'.format(dta_code))
 
 
     def load_gmd_record(self,reset=False):
         try: 
             if reset: assert(False)
-            record = read_csv(self.data_gmd+'/GMD_to_finalhhframe_status.csv').set_index('country')
+            record = pd.read_csv(self.data_gmd+'/GMD_to_finalhhframe_status.csv').set_index('country')
         except: 
             record = pd.DataFrame({'is_high_income':None,
                                    'GMD_has_sectoral_employment_data':None,
