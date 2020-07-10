@@ -454,11 +454,12 @@ def create_correct_data(mf,countrycode,issplit=False):
 
     # get education level
     has_skill = True
-    try: rawdataframe['skilled'] = rawdataframe['educy'].copy()
-    except:
-        try: rawdataframe['skilled'] = rawdataframe['educat4'].copy()
-        except: has_skill = False
-            
+    if 'educy' in rawdataframe.columns and rawdataframe['educy'].dropna().shape[0] != 0: rawdataframe['skilled'] = rawdataframe['educy']>=9
+    elif 'educat7' in rawdataframe.columns and rawdataframe['educat7'].dropna().shape[0] != 0: rawdataframe['skilled'] = rawdataframe['educat7']>=5
+    elif 'educat5' in rawdataframe.columns and rawdataframe['educat5'].dropna().shape[0] != 0: rawdataframe['skilled'] = rawdataframe['educat5']>=4
+    elif 'educat4' in rawdataframe.columns and rawdataframe['educat4'].dropna().shape[0] != 0: rawdataframe['skilled'] = rawdataframe['educat4']==4
+    else: has_skill = False
+
     # set welfare (annual per capita income/consumption in LCU) -> daily ppp
     # rawdataframe['Y'] = welfare/cpi2011/icp2011/365
     rawdataframe['Y'] = rawdataframe.eval('welfare/cpi2011/icp2011/365')

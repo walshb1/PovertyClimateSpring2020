@@ -54,7 +54,7 @@ class mainframe():
             self.country_file_dict[cname] = self.list_raw[skimname]
 
         self.rich_countries = []#'AUT','BEL']
-        self.countries_to_skip = #['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
+        self.countries_to_skip = []#['ARG','BGD','BFA','BEN','AFG','BLR','BOL','BDI']#'BGR'
 
         # drivers of scenarios
         self.uncertainties = ['shareag','sharemanu','shareemp','grserv','grag','grmanu','skillpserv','skillpag','skillpmanu','p','b','voice']
@@ -63,8 +63,17 @@ class mainframe():
         self.impact_scenars = pd.read_csv(self.scenar_folder+"impact-scenarios-low-high.csv")
 
     def get_ini_year(self):
-        for dta in range(len(self.list_raw)):
-            print(dta)
+
+        df_ini_year = pd.DataFrame(columns={'ini_year':None},index=self.list_countries)
+
+        for i in self.country_file_dict:
+
+            df = pd.read_stata(self.data_gmd_raw+self.country_file_dict[i])
+            df_ini_year.loc[i,'ini_year'] = df.iloc[0]['year']
+
+        df_ini_year.to_csv(self.data_gmd+'/ini_year.csv')
+        # for dta in range(len(self.list_raw)):
+            # print(dta)
 
     def dta_to_csv(self):
         #list_countries = [_ for _ in os.listdir(data_gmd_dta) if 'DS_Store' not in _]
@@ -108,18 +117,29 @@ class mainframe():
             record.loc[countrycode,'is_high_income'] = True if wbreg == 'YHI' else False
 
 
+            print('\n--> checking',countrycode)
             # Check if this has completed
             has_completed=False
             for cout in os.listdir(self.finalhhdataframes):
-                if countrycode in cout: has_completed = True
+                if countrycode in cout: 
+                    test_df = pd.read_csv(self.finalhhdataframes+cout)
+                    if (test_df['cat1workers'].sum() != 0 
+                        and test_df['cat2workers'].sum() != 0 
+                        and test_df['cat3workers'].sum() != 0 
+                        and test_df['cat4workers'].sum() != 0 
+                        and test_df['cat5workers'].sum() != 0 
+                        and test_df['cat6workers'].sum() != 0 
+                        and test_df['cat7workers'].sum() != 0): has_completed = True
+
             # if countrycode in record.index and record.loc[countrycode,'skim_is_final']==True: continue
-    		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
-    		#if countrycode in record.index and not record.loc[countrycode,'GMD_has_skill_level']: continue
+    		# if countrycode in record.index and not record.loc[countrycode,'GMD_has_sectoral_employment_data']: continue
+    		# if countrycode in record.index and not record.loc[countrycode,'GMD_has_skill_level']: continue
             if has_completed: continue
             print('\n--> running',countrycode)
 
                 
             try:
+            # if True:
                 finalhhframe, failure_types = create_correct_data(self,countrycode)
                 has_sectoral_employment_data,has_skill_level = failure_types
                 record.loc[countrycode,'GMD_has_sectoral_employment_data'] = has_sectoral_employment_data
